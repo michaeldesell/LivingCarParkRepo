@@ -13,4 +13,8 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CarParkLogic\CarParkLogic.csproj" />
+  </ItemGroup>
+
 </Project>
