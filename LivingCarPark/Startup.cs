@@ -44,12 +44,12 @@ namespace LivingCarPark
             }
 
             app.UseStaticFiles();
-            //app.UseMvc(cfg =>
-            //{
-            //    cfg.MapRoute("Default",
-            //        "/{controller}/{action}/{id?}",
-            //        new { controller = "App", Action = "Index" });
-            //});
+            app.UseMvc(cfg =>
+            {
+                cfg.MapRoute("Default",
+                    "/{controller}/{action}/{id?}",
+                    new { controller = "App", Action = "Index" });
+            });
             app.UseMvcWithDefaultRoute();
         }
     }
