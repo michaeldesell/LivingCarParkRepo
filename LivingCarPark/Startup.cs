@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LivingCarPark.Data;
+using LivingCarPark.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -23,16 +24,18 @@ namespace LivingCarPark
             _config = config;
 
         }
+        public IConfiguration Configuration { get; }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<LivingCarParkContext>(cfg =>
-            {
-                cfg.UseSqlServer(_config.GetConnectionString("DBConnectionString"));
+            //services.AddDbContext<LivingCarParkContext>(cfg =>
+            //{
+            //    cfg.UseSqlServer(_config.GetConnectionString("DBConnectionString"));
 
-            });
+            //});
             services.AddMvc();
+            services.Configure<MySettingsModel>(_config.GetSection("MySettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,5 +55,35 @@ namespace LivingCarPark
             });
             app.UseMvcWithDefaultRoute();
         }
+
+        //// This method gets called by the runtime. Use this method to add services to the container.
+        //public void ConfigureServices(IServiceCollection services)
+        //{
+        //    services.AddMvc();
+        //    services.Configure<MySettingsModel>(Configuration.GetSection("MySettings"));
+        //}
+
+        //// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        //public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        //{
+        //    if (env.IsDevelopment())
+        //    {
+        //        app.UseBrowserLink();
+        //        app.UseDeveloperExceptionPage();
+        //    }
+        //    else
+        //    {
+        //        app.UseExceptionHandler("/Home/Error");
+        //    }
+
+        //    app.UseStaticFiles();
+
+        //    app.UseMvc(routes =>
+        //    {
+        //        routes.MapRoute(
+        //            name: "default",
+        //            template: "{controller=Home}/{action=Index}/{id?}");
+        //    });
+        //}
     }
 }

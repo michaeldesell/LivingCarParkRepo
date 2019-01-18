@@ -9,10 +9,10 @@ namespace LivingCarPark.Data
 {
     public class LivingCarParkContext : DbContext
     {
-
+        //public LivingCarParkContext DBContext;
         public LivingCarParkContext(DbContextOptions<LivingCarParkContext> options): base(options)
         {
-
+            //DBContext = new LivingCarParkContext(options);
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Carpark> Carparks { get; set; }

@@ -19,7 +19,7 @@ namespace CarParkLogic
         {
             Random Rgenerate = new Random();
             int cars = 0;
-            cars=Rgenerate.Next(4);
+            cars=Rgenerate.Next(5);
             return cars;
         }
 
@@ -32,7 +32,12 @@ namespace CarParkLogic
         {
             bool needsbuild = false;
 
+            Random Rgenerate = new Random();
+            int cars = 0;
+
+            cars = Rgenerate.Next(6);
             return needsbuild;
+           
         }
     }
 }
