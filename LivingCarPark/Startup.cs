@@ -29,12 +29,15 @@ namespace LivingCarPark
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<LivingCarParkContext>(cfg =>
-            //{
-            //    cfg.UseSqlServer(_config.GetConnectionString("DBConnectionString"));
+            services.AddDbContext<LivingCarParkContext>(cfg =>
+            {
+                cfg.UseSqlServer(_config.GetConnectionString("DBConnectionString"));
 
-            //});
+            });
             services.AddMvc();
+
+          
+
             services.Configure<MySettingsModel>(_config.GetSection("MySettings"));
         }
 
