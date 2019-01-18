@@ -21,6 +21,7 @@
     <ProjectReference Include="..\CarParkApi\CarParkApi.csproj" />
     <ProjectReference Include="..\CarParkLogic\CarParkLogic.csproj" />
     <ProjectReference Include="..\CoreApiClient\CoreApiClient.csproj" />
+    <ProjectReference Include="..\TextHelper\TextHelper.csproj" />
   </ItemGroup>
 
 </Project>

@@ -29,6 +29,10 @@ namespace WebApiModels.Model
         public int Parkingspace { get; set; }
         [DataMember(Name = "Amountofcars")]
         public int Amountofcars { get; set; }
+        [DataMember(Name = "develop_pressure")]
+        public int develop_pressure { get; set; }
+        [DataMember(Name = "develop_pressure")]
+        public int carpark_rating { get; set; }
 
     }
 

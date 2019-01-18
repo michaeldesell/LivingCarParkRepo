@@ -8,6 +8,7 @@ using LivingCarPark.Data.Entities;
 using LivingCarPark.Model;
 using Microsoft.Extensions.Options;
 using WebApiModels.Model;
+using TextHelper;
 
 using LivingCarPark.Factory;
 
@@ -51,14 +52,32 @@ namespace LivingCarPark.Controllers
             return View();
         }
 
+       
         [HttpGet]
         public async Task<string[]> CarsArrivingAndLeaving()
         {
+            TestingRepo.init();
+            //if(Testing==null)
+            //{
+            //    Testing = new UserCarPark();
+            //    Testing.Id = 1;
+            //    Testing.Fk_user = 1;
+            //    Testing.Floors = 1;
+            //    Testing.Name = "Testing CarPark";
+            //    Testing.Parkingspace = 4;
+            //    Testing.Amountofcars = 0;
+            //}
           
-            var data4 = await ApiClientFactory.Instance.ChangeCars(new WebApiModels.ChangeCars() { Fk_carpark = 1, change_in_cars = 3 });
-            string[] messages = { "placeholder", "placeholder2", "placeholder3", "placeholder4" };
+          
+
+            int[] CarData= CarParkDataLogic.CarsArrivingAndLeaving(TestingRepo.TestingCarPark);
+            if(CarData[1]!=0)
+            {
+                var data4 = await ApiClientFactory.Instance.ChangeCars(new WebApiModels.ChangeCars() { Fk_carpark = TestingRepo.TestingCarPark.Id, change_in_cars = CarData[0] });
+            }
+           
             
-            return messages;
+            return Functions.TellWhatHappends(CarData);
         }
     }
 }
