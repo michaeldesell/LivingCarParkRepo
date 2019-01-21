@@ -14,7 +14,14 @@
                     success: function (data) {
                         
                         //alert(data);
-                        $("#display").text(data)
+                        //$("#display").text(data)
+                        $("#l1").text(" cars in garage: "+data[0])
+                        $("#l2").text(" difference: "+data[1])
+                        $("#l3").text(" new cars: "+data[2])
+                        $("#l4").text(" leaving cars:" +data[3])
+                        $("#l5").text(" left because of no space:"+data[4])
+                        $("#l6").text(" Develop points: "+data[5])
+                        $("#l7").text(" Park rating: "+data[6])
                     }
 
               
@@ -31,6 +38,24 @@
 @{
     ViewData["Title"] = "CarPark";
 }
-<textarea id="display" rows="20" cols="200"></textarea>
+@*<textarea id="display" rows="20" cols="200"></textarea>*@
+<div>
+    <table>
+        <tr id="l1"></tr>
+        <tr id="l2"></tr>
+        <tr id="l3"></tr>
+        <tr id="l4"></tr>
+        <tr id="l5"></tr>
+        <tr id="l6"></tr>
+        <tr id="l7"></tr>
+    </table>
+   
+    @*<label id="l2"></label>
+    <label id="l3"></label>
+    <label id="l4"></label>
+    <label id="l5"></label>
+    <label id="l6"></label>
+    <label id="l7"></label>*@
+</div>
 <h2>välkomment till carpark</h2>
 

@@ -22,9 +22,21 @@ namespace CarParkLogic
             //int carsleaving = CarParkFunctions.CarsLeaving();
             //int cardiff=
             CarData = CarParkFunctions.CarsSubtract(currentcarsinpark);
+            //CarData
+            //[0]=Current cars
+            //[1]= Difference in arriving and leaving
+            //[2]=arriving cars
+            //[3]=leaving cars
+            //[4]=Left because of no space
+            //[5]=DevPoints 
+            //[6]=ParkPoints
             currentcarsinpark.Amountofcars = CarData[0];
+            currentcarsinpark.carpark_rating += CarData[6];
             currentcarsinpark.develop_pressure += CarData[5];
-            currentcarsinpark.carpark_rating = CarData[6];
+
+            //currentcarsinpark.Amountofcars = CarData[0];
+            //currentcarsinpark.develop_pressure += CarData[5];
+            //currentcarsinpark.carpark_rating = CarData[6];
             //if(CarData[1]!=0)
             //{
             //    //Call the api to make the changes//

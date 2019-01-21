@@ -54,7 +54,7 @@ namespace LivingCarPark.Controllers
 
        
         [HttpGet]
-        public async Task<string[]> CarsArrivingAndLeaving()
+        public async Task<int[]> CarsArrivingAndLeaving()
         {
             TestingRepo.init();
             //if(Testing==null)
@@ -73,7 +73,7 @@ namespace LivingCarPark.Controllers
             int[] CarData= CarParkDataLogic.CarsArrivingAndLeaving(TestingRepo.TestingCarPark);
             if(CarData[1]!=0)
             {
-                var data4 = await ApiClientFactory.Instance.ChangeCars(new WebApiModels.ChangeCars() { Fk_carpark = TestingRepo.TestingCarPark.Id, change_in_cars = CarData[0] });
+                var data4 = await ApiClientFactory.Instance.ChangeCars(new WebApiModels.ChangeCars() { Fk_carpark = TestingRepo.TestingCarPark.Id, change_in_cars = CarData[1] });
             }
            
             
