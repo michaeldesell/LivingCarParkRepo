@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CarParkLogic;
-using LivingCarPark.Data.Entities;
+using CarParkApi.Data.Entities;
 using LivingCarPark.Model;
 using Microsoft.Extensions.Options;
 using WebApiModels.Model;
@@ -17,6 +17,7 @@ namespace LivingCarPark.Controllers
     public class CarParkController : Controller
     {
         private readonly IOptions<MySettingsModel> appSettings;
+    
         public CarParkController(IOptions<MySettingsModel> app)
         {
             appSettings = app;

@@ -1,10 +1,6 @@
-﻿{
+{
   "ConnectionStrings": {
     "DBConnectionString": "server=(localdb)\\MSSQLLocalDB;Database=LivingCarParkDb;Integrated Security=true;MultipleActiveResultSets=true"
-
-  },
-
-  "MySettings": {
-    "WebApiBaseUrl": "http://localhost:8888/api/"
   }
+
 }

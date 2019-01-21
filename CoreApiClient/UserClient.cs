@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using WebApiModels.Model;
+using CarParkApi.Data.Entities;
 
 namespace CoreApiClient
 {
     public partial class ApiClient
     {
 
-        public async Task<List<UserModel>> GetUsers()
+        public async Task<List<CarParkUser>> GetUsers()
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
                 "User/GetAllUsers"));
-            return await GetAsync<List<UserModel>>(requestUrl);
+            return await GetAsync<List<CarParkUser>>(requestUrl);
         }
 
         public async Task<Message<UserModel>> LoginUser(UserModel model)

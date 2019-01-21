@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using CarParkApi.Model;
+using CarParkApi.Data;
+using CarParkApi.Data.Entities;
 
 
 namespace CarParkApi.Controllers
@@ -16,28 +18,33 @@ namespace CarParkApi.Controllers
     {
 
         private readonly IOptions<Model.MySettingsModel> appSettings;
-        public UserController(IOptions<Model.MySettingsModel> app)
+        private LivingCarParkContext _context;
+
+        public UserController(IOptions<Model.MySettingsModel> app, LivingCarParkContext context)
         {
             appSettings = app;
+            _context = context;
+
         }
         // GET api/values
         [HttpGet]
         [Route("GetAllUsers")]
         public IActionResult GetAllUsers()
         {
-            //return new string[] { "value1", "value2" };
-            List<UserModel> list = new List<UserModel>();
-            list.Add(new UserModel()
-            {
-                Id = 1,
-                Carpark = 1,
-                Password = "banan",
-                Username = "bananarne"
+            var users = _context.Users
+                .Select(u => new
+                {
+                    u.FirstName,
+                    u.LastName,
+                    u.Email
+                }
+                )
+                              .ToList();
 
+            List<CarParkUser> usertest= _context.Users.ToList();
 
-            });
-            var data = list;
-            return Ok(data);
+            return Ok(users);
+
         }
 
         [HttpPost]
@@ -45,7 +52,7 @@ namespace CarParkApi.Controllers
         public IActionResult LoginUser(UserModel login)
         {
             //return new string[] { "value1", "value2" };
-           UserModel Data = new UserModel()
+            UserModel Data = new UserModel()
             {
                 Id = 1,
                 Carpark = 1,
@@ -91,7 +98,7 @@ namespace CarParkApi.Controllers
         {
             //return new string[] { "value1", "value2" };
             ChangeCars Data = change_in_cars;
-           
+
             var msg = new Message<ChangeCars>();
             msg.IsSuccess = true;
             msg.Data = Data;
