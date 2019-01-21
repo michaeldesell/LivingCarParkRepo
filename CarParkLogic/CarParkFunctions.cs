@@ -39,28 +39,117 @@ namespace CarParkLogic
 
         }
 
-        public static int[] IsCarparkFull(int cars,int difference,UserCarPark carparks)
+        public static int AddCars(int difference, int maxspaces, int totaltcars)
         {
-            int[] currentcars = { 0, 0, carparks.develop_pressure, carparks.carpark_rating};
-            if (cars > (carparks.Floors * carparks.Parkingspace))
+            int currentcars = 0;
+           
+
+            //int[] currentcars = { 0, 0, carparks.develop_pressure, carparks.carpark_rating};
+            if (totaltcars > maxspaces)
             {
-                currentcars[0] = (carparks.Floors * carparks.Parkingspace);
-                currentcars[1] = currentcars[0] - cars;
-                currentcars[2] += currentcars[1];
-                currentcars[3] += currentcars[2];
+                currentcars = maxspaces;
+                //currentcars[1] = currentcars[0] - cars;
+                //currentcars[2] += currentcars[1];
+                //currentcars[3] += currentcars[2];
             }
-            else if(difference>0)
+            else
             {
-                currentcars[0] = cars;
-                currentcars[3] += difference;
+                currentcars += difference;
             }
-            else if(difference<=0)
+
+            //Current cars cannot be less than zero
+            if (currentcars < 0)
+                currentcars = 0;
+            //else if (difference > 0)
+            //{
+            //    currentcars[0] = cars;
+            //    currentcars[3] += difference;
+            //}
+            //else if (difference <= 0)
+            //{
+            //    currentcars[0] = cars;
+            //    currentcars[3] += 1;
+            //}
+
+
+            return currentcars;
+        }
+        public static int Leftbecausenospace(int difference, int maxspaces, int totaltcars)
+        {
+            int left = 0;
+
+
+            //int[] currentcars = { 0, 0, carparks.develop_pressure, carparks.carpark_rating};
+            if (totaltcars > maxspaces)
             {
-                currentcars[3] += 1;
+                left = (totaltcars-maxspaces);
+                //currentcars[1] = currentcars[0] - cars;
+                //currentcars[2] += currentcars[1];
+                //currentcars[3] += currentcars[2];
+            }
+            else
+            {
+                left = 0;
             }
 
             
-            return currentcars;
+
+            return left;
+        }
+
+        public static int DoesCarParkNeedDevelop(int currentcars,int currentspace, int difference)
+        {
+            int Developoints = 0;
+            if (currentcars > currentspace)
+            {
+                Developoints += (currentcars - currentspace);
+                //currentcars[0] = (carparks.Floors * carparks.Parkingspace);
+                //currentcars[1] = currentcars[0] - cars;
+                //currentcars[2] += currentcars[1];
+                //currentcars[3] += currentcars[2];
+            }
+            //else if (difference > 0)
+            //{
+
+            //    //currentcars[0] = cars;
+            //    //currentcars[3] += difference;
+            //}
+            //else if (difference <= 0)
+            //{
+            //    //currentcars[0] = cars;
+            //    //currentcars[3] += 1;
+            //}
+
+
+            return Developoints;
+        }
+
+        public static int DoesCarParkGoesUpInRating(int currentcars,int currentspace, int difference)
+        {
+
+            int CarParkRating = 0;
+            if (currentcars > currentspace)
+            {
+                //there is not enoug parkingspace. Subtract for each car that does not fit
+                CarParkRating -= (currentcars - currentspace);
+                //currentcars[0] = (carparks.Floors * carparks.Parkingspace);
+                //currentcars[1] = currentcars[0] - cars;
+                //currentcars[2] += currentcars[1];
+                //currentcars[3] += currentcars[2];
+            }
+            else if(difference>0)
+            {
+                //there is enoug parkingspace. add for each car that does fit
+                CarParkRating += difference;
+            }
+            else
+            {
+                //no new car arrived. add +1 rating so the rating slowly starts returning
+                CarParkRating += 1;
+            }
+
+
+            return CarParkRating;
         }
 
         public static int[] CarsSubtract(UserCarPark currentpark)
@@ -69,16 +158,28 @@ namespace CarParkLogic
             int[] currentcars = { 0, 0,0,0,0,0 };
             int arriving = CarsArriving(currentpark);
             int leaving = CarsLeaving(currentpark);
+            int difference = (arriving - leaving);
+            int carsneedspacek = (currentpark.Amountofcars + difference);
+            //int allcars = (currentpark.Amountofcars + (arriving - leaving))>=0 ? (currentpark.Amountofcars + (arriving - leaving)):0;
+            int maxspaces = (currentpark.Floors * currentpark.Parkingspace);
+            int totaltcars = (currentpark.Amountofcars + difference);
+           
+            int devpoints = DoesCarParkNeedDevelop(carsneedspacek, maxspaces, difference);
+            int rating=DoesCarParkGoesUpInRating(carsneedspacek, maxspaces, difference);
+            int leftbecauseofnospace = Leftbecausenospace(difference, maxspaces, totaltcars);
+            int currcars = AddCars(difference, maxspaces, totaltcars);
 
-            currentcars= IsCarparkFull((currentpark.Amountofcars + (arriving - leaving)), (arriving - leaving), currentpark);
+            //currentcars = IsCarparkFull(allcars, (arriving - leaving), currentpark);
+
 
             //[0]=Current cars
             //[1]= Difference in arriving and leaving
             //[2]=arriving cars
             //[3]=leaving cars
             //[4]=Left because of no space
-            //[5]=ParkPoints 
-            return new int[] {currentcars[0] , (arriving - leaving), arriving, leaving, currentcars[1], currentcars[2], currentcars[3] };
+            //[5]=DevPoints 
+            //[6]=ParkPoints 
+            return new int[] { currcars, difference, arriving, leaving, leftbecauseofnospace, devpoints, rating };
         }
 
         public static bool FloorNeedsBuild()
