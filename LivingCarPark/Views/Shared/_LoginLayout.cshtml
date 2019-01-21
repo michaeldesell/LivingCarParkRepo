@@ -3,22 +3,24 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    <link href="~/css/site.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/site.css" rel="stylesheet" type="text/css"/>
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-</head>
+    </head>
 <body>
-    <div class="w-100 p-3">
-        <div class="banan">
-            <a asp-controller="Account" asp-action="Login">Welcome @UserManager.GetUserAsync(User).Result.FirstName</a>
-            <a asp-controller="Account" asp-action="Logout">Logout</a>
-        </div>
-    </div>
 
     <header class="container">
+        <div class="center-block page-header">
+            <img src="~/images/carpark.png" class="center-block" />
+        </div>
+
+
         <h3 class="text-center">@ViewBag.Title</h3>
+
     </header>
     <div class="container">
+
         @RenderBody()
+
     </div>
     <div class="container"><footer class="text-center">Living Car Park Copyright 2019</footer></div>
     <script src="~/node_modules/jquery/dist/jquery.min.js"></script>

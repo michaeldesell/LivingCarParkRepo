@@ -17,7 +17,7 @@ namespace LivingCarPark.Controllers
         private SignInManager<CarParkUser> _signInManager;
         private UserManager<CarParkUser> _userManager;
 
-        public AccountController(ILogger<AccountController> logger, SignInManager<CarParkUser> signInManager,UserManager<CarParkUser> userManager)
+        public AccountController(ILogger<AccountController> logger, SignInManager<CarParkUser> signInManager, UserManager<CarParkUser> userManager)
         {
             _logger = logger;
             _signInManager = signInManager;
@@ -55,13 +55,7 @@ namespace LivingCarPark.Controllers
 
                 if (result.Succeeded)
                 {
-                    if (Request.Query.Keys.Contains("ReturnUrl"))
-                    {
-
-                        Redirect(Request.Query["ReturnUrl"].First());
-                    }
-                    else
-                        RedirectToAction("Index", "App");
+                    return RedirectToAction("Index", "App");
 
                 }
             }
@@ -84,22 +78,23 @@ namespace LivingCarPark.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                var user = new CarParkUser { UserName = model.Email, Email = model.Email, PasswordHash = model.Password };
+                var user = new CarParkUser { FirstName = model.FirstName,LastName = model.LastName, UserName = model.Email, Email = model.Email, PasswordHash = model.Password };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
 
 
                     _logger.LogInformation("User created a new account with password");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password");
-                    Redirect(Request.Query["ReturnUrl"].First());
+                    return RedirectToAction("Index", "App");
                 }
 
+                _logger.LogError(result.Errors.ToString());
                 ModelState.AddModelError("", "Falied to create user");
 
 

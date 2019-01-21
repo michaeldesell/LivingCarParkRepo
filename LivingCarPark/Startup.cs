@@ -49,7 +49,9 @@ namespace LivingCarPark
                 .AddEntityFrameworkStores<LivingCarParkContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services.AddMvc(
+                
+                );
 
           
 
@@ -63,16 +65,17 @@ namespace LivingCarPark
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            
+                        
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseMvc(cfg =>
             {
                 cfg.MapRoute("Default",
                     "/{controller}/{action}/{id?}",
                     new { controller = "App", Action = "Index" });
             });
-            app.UseMvcWithDefaultRoute();
+           
+            
         }
 
         //// This method gets called by the runtime. Use this method to add services to the container.

@@ -13,13 +13,13 @@ namespace LivingCarPark.Controllers
 {
     public class AppController : Controller
     {
-        // GET: /<controller>/
+        //// GET: /<controller>/
         [Authorize]
         public IActionResult Index()
         {
             return View();
         }
-        
+
         //public IActionResult CarPark()
         //{          
         //    //MZ this is only here to b able to test the logic
@@ -35,6 +35,6 @@ namespace LivingCarPark.Controllers
         //    return messages;
         //}
 
-       
+
     }
 }
