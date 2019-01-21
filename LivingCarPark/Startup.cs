@@ -10,6 +10,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication;
+using LivingCarPark.Data.Entities;
 
 namespace LivingCarPark
 {
@@ -29,11 +33,22 @@ namespace LivingCarPark
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+          
+            //Add DBContext and fetch ConnectionString from config
             services.AddDbContext<LivingCarParkContext>(cfg =>
             {
                 cfg.UseSqlServer(_config.GetConnectionString("DBConnectionString"));
 
             });
+
+            //Register services needed for dependency injection, using ApplicationUser class
+            services.AddIdentity<CarParkUser, IdentityRole>(cfg =>
+            {
+                cfg.User.RequireUniqueEmail = true;
+            })
+                .AddEntityFrameworkStores<LivingCarParkContext>()
+                .AddDefaultTokenProviders();
+
             services.AddMvc();
 
           
@@ -49,6 +64,7 @@ namespace LivingCarPark
                 app.UseDeveloperExceptionPage();
             }
 
+            
             app.UseStaticFiles();
             app.UseMvc(cfg =>
             {

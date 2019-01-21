@@ -1,16 +1,37 @@
 ﻿<!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>  
+    <title>@ViewBag.Title</title>
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
 </head>
 <body>
-    <div>
+    <nav>
+        <a asp-controller="Account" asp-action="Login">Login</a>
+        <a asp-controller="Account" asp-action="Logout">Logout</a>
+
+
+    </nav>
+    <header class="container">
+        <div class="center-block page-header">
+            <img src="~/images/carpark.png" class="center-block" />
+        </div>
+
+
+        <h3 class="text-center">@ViewBag.Title</h3>
+
+    </header>
+    <div class="container">
 
         @RenderBody()
+
     </div>
-    <footer>Living Car Park Copyright 2019</footer>
+    <div class="container"><footer class="text-center">Living Car Park Copyright 2019</footer></div>
+    <script src="~/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="~/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("scripts", false)
 </body>
 
 </html>
