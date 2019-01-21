@@ -1,7 +1,36 @@
 ﻿
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready()
+        {
+         
+            setInterval(function () {
+                $.ajax({
+
+                    url: "@Url.Action("CarsArrivingAndLeaving", "CarPark")",
+                    type:"GET",
+                    success: function (data) {
+                        
+                        //alert(data);
+                        $("#display").text(data)
+                    }
+
+              
+                });
+
+            }, 10000
+            );
+        };
+
+       
+       
+    </script>
+</head>
 @{
     ViewData["Title"] = "CarPark";
 }
-
-<h2>CarPark</h2>
+<textarea id="display" rows="20" cols="200"></textarea>
+<h2>välkomment till carpark</h2>
 

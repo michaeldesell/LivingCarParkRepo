@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>mykey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +13,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Tutorials\" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CarParkApi\CarParkApi.csproj" />
     <ProjectReference Include="..\CarParkLogic\CarParkLogic.csproj" />
+    <ProjectReference Include="..\CoreApiClient\CoreApiClient.csproj" />
+    <ProjectReference Include="..\TextHelper\TextHelper.csproj" />
   </ItemGroup>
 
 </Project>
