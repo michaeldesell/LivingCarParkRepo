@@ -1,0 +1,36 @@
+﻿@model RegisterViewModel
+@{ViewBag.Title = "Register";}
+@section Scripts {
+
+    <script src="~/node_modules/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+}
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly"></div>
+                <div class="form-group">
+                    <label asp-for="Email">Email</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-warning"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password">Password</label>
+                    <input asp-for="Password" type="password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-warning"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ComfirmPassword">Confirm password</label>
+                    <input asp-for="ComfirmPassword" type="password" class="form-control" />
+                    <span asp-validation-for="ComfirmPassword" class="text-warning"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Register" class="btn btn-success" />
+                </div>
+            </form>
+        </div>
+
+    </div>

@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LivingCarPark.Data.Entities
+namespace LivingCarPark.ViewModels
 {
-    public class User
+    public class LoginViewModel
     {
-        public int Id { get; set; }
+        [Required]
         public string Username { get; set; }
+        [Required]
         public string Password { get; set; }
-        public int Carpark { get; set; }
-
+        public bool RememberMe { get; set; }
     }
 }

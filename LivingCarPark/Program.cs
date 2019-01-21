@@ -21,7 +21,7 @@ namespace LivingCarPark
             WebHost.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration(SetupConfiguration)
                 .UseStartup<Startup>();
-
+        
         private static void SetupConfiguration(WebHostBuilderContext ctx, IConfigurationBuilder builder)
         {
             builder.Sources.Clear();

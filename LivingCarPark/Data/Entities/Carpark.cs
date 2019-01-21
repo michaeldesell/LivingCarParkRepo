@@ -10,5 +10,6 @@ namespace LivingCarPark.Data.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public int Floors { get; set; }
+        public CarParkUser User { get; set; }
     }
 }

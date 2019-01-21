@@ -9,10 +9,10 @@ namespace LivingCarPark.Controllers
 {
     public class CarParkController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
 
         public IActionResult CarPark()
         {
