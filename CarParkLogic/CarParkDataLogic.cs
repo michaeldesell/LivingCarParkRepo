@@ -26,11 +26,13 @@ namespace CarParkLogic
             //[4]=Left because of no space
             //[5]=DevPoints 
             //[6]=ParkPoints
+            //[7]=Floors
             currentcarsinpark.Amountofcars = CarData[0];
             currentcarsinpark.carpark_rating += CarData[6];
             currentcarsinpark.develop_pressure += CarData[5];
+            currentcarsinpark.Floors = CarData[7];
 
-          
+
             return CarData;
         }
      

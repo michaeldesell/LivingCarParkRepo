@@ -11,5 +11,8 @@ namespace CarParkApi.Data.Entities
         public string Name { get; set; }
         public int Floors { get; set; }
         public CarParkUser User { get; set; }
+        public int Amountofcars { get; set; }
+        public int develop_pressure { get; set; }
+        public int carpark_rating { get; set; }
     }
 }

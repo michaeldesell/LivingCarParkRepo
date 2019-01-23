@@ -168,7 +168,7 @@ namespace CarParkLogic
             int rating=DoesCarParkGoesUpInRating(carsneedspacek, maxspaces, difference);
             int leftbecauseofnospace = Leftbecausenospace(difference, maxspaces, totaltcars);
             int currcars = AddCars(difference, maxspaces, totaltcars);
-
+            int floors = 1;
             //currentcars = IsCarparkFull(allcars, (arriving - leaving), currentpark);
 
 
@@ -179,7 +179,7 @@ namespace CarParkLogic
             //[4]=Left because of no space
             //[5]=DevPoints 
             //[6]=ParkPoints 
-            return new int[] { currcars, difference, arriving, leaving, leftbecauseofnospace, devpoints, rating };
+            return new int[] { currcars, difference, arriving, leaving, leftbecauseofnospace, devpoints, rating,floors};
         }
 
         public static bool FloorNeedsBuild()

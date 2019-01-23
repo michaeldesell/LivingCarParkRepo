@@ -153,12 +153,14 @@ namespace CarParkApi.Controllers
 
             Carpark cp = _context.Carparks.FirstOrDefault(x => x.Id == change_in_cars.Fk_carpark);
 
-            /// Save maount of space///
-            /// //
-            /// //
-            /// //
-            /// //
-            /// //
+            cp.Amountofcars = change_in_cars.change_in_cars;
+            cp.Floors = change_in_cars.Floors;
+            cp.develop_pressure = change_in_cars.develop_pressure;
+            cp.carpark_rating = change_in_cars.carpark_rating;
+
+            _context.Update(cp);
+            _context.SaveChanges();
+            //_context.SaveChanges();
             var msg = new Message<ChangeCars>();
             msg.IsSuccess = true;
             msg.Data = Data;

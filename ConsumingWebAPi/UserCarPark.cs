@@ -9,14 +9,7 @@ namespace WebApiModels.Model
     [DataContract]
     public class UserCarPark
     {
-        //[DataMember(Name = "Id")]
-        //public int Id { get; set; }
-        //[DataMember(Name = "Username")]
-        //public string Username { get; set; }
-        //[DataMember(Name = "Password")]
-        //public string Password { get; set; }
-        //[DataMember(Name = "Carpark")]
-        //public int Carpark { get; set; }
+        
         [DataMember(Name = "Id")]
         public int Id { get; set; }
         [DataMember(Name = "Fk_user")]
@@ -31,7 +24,7 @@ namespace WebApiModels.Model
         public int Amountofcars { get; set; }
         [DataMember(Name = "develop_pressure")]
         public int develop_pressure { get; set; }
-        [DataMember(Name = "develop_pressure")]
+        [DataMember(Name = "carpark_rating")]
         public int carpark_rating { get; set; }
 
     }
