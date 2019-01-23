@@ -10,11 +10,12 @@ using Microsoft.Extensions.Options;
 using WebApiModels.Model;
 using TextHelper;
 using LivingCarPark.ViewModels;
-
+using Microsoft.AspNetCore.Authorization;
 using LivingCarPark.Factory;
 
 namespace LivingCarPark.Controllers
 {
+    [Authorize]
     public class CarParkController : Controller
     {
         private readonly IOptions<MySettingsModel> appSettings;

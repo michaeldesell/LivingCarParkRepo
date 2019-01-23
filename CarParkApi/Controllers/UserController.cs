@@ -150,6 +150,15 @@ namespace CarParkApi.Controllers
             //return new string[] { "value1", "value2" };
             ChangeCars Data = change_in_cars;
 
+
+            Carpark cp = _context.Carparks.FirstOrDefault(x => x.Id == change_in_cars.Fk_carpark);
+
+            /// Save maount of space///
+            /// //
+            /// //
+            /// //
+            /// //
+            /// //
             var msg = new Message<ChangeCars>();
             msg.IsSuccess = true;
             msg.Data = Data;
