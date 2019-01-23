@@ -1,18 +1,19 @@
 ﻿
+<!DOCTYPE html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
 
         $(document).ready()
         {
-         
+
             setInterval(function () {
                 $.ajax({
 
                     url: "@Url.Action("CarsArrivingAndLeaving", "CarPark")",
                     type:"GET",
                     success: function (data) {
-                        
+
                         //alert(data);
                         //$("#display").text(data)
                         $("#l1").text(" cars in garage: "+data[0])
@@ -21,41 +22,380 @@
                         $("#l4").text(" leaving cars:" +data[3])
                         $("#l5").text(" left because of no space:"+data[4])
                         $("#l6").text(" Develop points: "+data[5])
-                        $("#l7").text(" Park rating: "+data[6])
+                        $("#l7").text(" Park rating: " + data[6])
+
+                       
+                        //div.setAttribute('src', '~/../Resources/Red car.png');
+                        //$("#GameArea").append(div);
+
+
+                        //floors on parkinghouse
+                        var i;
+                        for (i = 0; i < 10; i++) {
+
+                        }
+
+                        ///Cars leaving
+                        //var i;
+                        //for (i = 0; i < data[3]; i++) {
+
+                           
+                        //        var div = document.createElement('div');
+                        //        div.textContent = "C";
+                        //        div.setAttribute('class', 'leavingcar');
+                        //        div.setAttribute('style', 'background-color:yellow;height:10px;position:absolute;width:10px;top:450px;left:450px');
+                        //    $("#GameArea").append(div)
+
+                        //    animateDivToSpawnpoint($('.leavingcar'), 1)
+                            
+                        //}
+                          ///Cars Arriving
+                        ////alert(data[2]);
+                        //var i;
+                      
+                        DelayCreationCar(data[2])
+                       
+                    
+                        //var i;
+                        //for (i = 0; i < data[2]; i++) {
+                        //    //setTimeout(DelayCreationCar(i), (i * 2000))
+                        //    setInterval(DelayCreationCar(i),1000)
+                        //}
+
+                          ///Cars Leaving because of no space
+                        var i;
+                        for (i = 0; i < data[4]; i++) {
+
+                        }
                     }
 
-              
+
                 });
 
             }, 10000
             );
+
+            function makeNewPositionToGarage($container, steps) {
+
+                var gamearea = $("#GameArea").width()
+                var gameareaheight = $("#GameArea").height()
+       
+                var nh = gameareaheight-10
+                var nw = gamearea/2
+
+                return [nh, nw];
+
+            }
+
+            function animateDivToGarage(i, steps) {
+                //alert('run step ' +step);
+                var j
+                for (j = 0; j < i; j++) {
+
+                    setTimeout(function () {
+
+                        var newq = makeNewPositionToGarage($('#garagebotlevel'), steps);
+                        //alert($target.offset())
+                        var oldq = $target.offset();
+                        var speed = calcSpeed([oldq.top, oldq.left], newq);
+
+                        //alert(newq[0]+" och "+newq[1]);
+                        $target.animate({
+                            top: newq[0],
+                            left: newq[1]
+                        }, speed, doneanddestroy($target)
+
+
+                        );
+
+                    },1000)
+                    } ;
+                
+               
+
+            };
+
+            function makeNewPositionToSpawnpoint($container, steps) {
+
+                var gamearea = $("#GameArea").width()
+                var gameareaheight = $("#GameArea").height()
+
+                var nh = gameareaheight
+                var nw = 0
+
+                return [nh, nw];
+
+            }
+
+            function animateDivToSpawnpoint($target, steps) {
+                //alert('run step ' +step);
+                var newq = makeNewPositionToSpawnpoint($('#GameArea'), steps);
+                //alert($target.offset())
+                var oldq = $target.offset();
+                var speed = calcSpeed([oldq.top, oldq.left], newq);
+
+                //alert(newq[0]+" och "+newq[1]);
+                $target.animate({
+                    top: newq[0],
+                    left: newq[1]
+                }, speed, doneanddestroyleaving($target)
+
+
+                );
+
+            };
+
+            function doneanddestroy($target) {
+
+                setTimeout(function () {
+                    
+                    $target.remove();
+                }, 10000);
+                
+                //$target.remove();
+            }
+
+            function doneanddestroyleaving($target) {
+
+                setTimeout(function () {
+                
+                    $target.remove();
+                }, 10000);
+
+                //$target.remove();
+            }
+
+            function DelayCreationCar(i) {
+
+
+                //alert(" detta blir jobbigt");
+                var j
+                for (j = 0; j < i; j++) {
+                    var div = document.createElement('div');
+                    div.textContent = "C" + j;
+                    div.setAttribute('class', 'car' + j);
+                    div.setAttribute('style', 'background-color:red;height:10px;position:absolute;width:10px;top:450px;left:999px');
+                    $("#GameArea").append(div)
+                    animateDivToGarage(j, 1)
+                }
+                //var div = document.createElement('div');
+                //div.textContent = "C"+i;
+                //div.setAttribute('class', 'car'+i);
+                //div.setAttribute('style', 'background-color:red;height:10px;position:absolute;width:10px;top:450px;left:999px');
+                //$("#GameArea").append(div)
+
+                animateDivToGarage(i, 1)
+            }
+
+            function calcSpeed(prev, next) {
+
+                var x = Math.abs(prev[1] - next[1]);
+                var y = Math.abs(prev[0] - next[0]);
+
+                var greatest = x > y ? x : y;
+
+                var speedModifier = 0.1;
+
+                var speed = Math.ceil(greatest / speedModifier);
+
+                return speed;
+
+            }
         };
 
-       
-       
+        //var steps = 0;
+        //$(document).ready(function () {
+
+        //    steps = 0;
+
+        //    var myVar = setTimeout(animateDiv($('.a'), steps), 5000);
+
+        //});
+
+
+        //function makeNewPosition($container, steps) {
+
+        //    // Get viewport dimensions (remove the dimension of the div)
+        //    //console.log($container.position())
+        //    //var element = document.getElementById('container');
+        //    var containermargin = document.getElementById("container").offsetLeft;
+        //    //console.log(testmargin + ' is element')
+        //    //console.log(element + ' is element')
+        //    //var $img = $('container');
+        //    //var left = $("container").offset().left;
+        //    //console.log(left)
+        //    //console.log($img.position())
+        //    //console.log($img  + ' is element jquery')
+        //    //console.log($img.css('margin-left'))
+        //    //var marginh = element.getComputedStyle;
+        //    //console.log(marginh.marginRight);
+        //    var h = $container.height() - 50;
+        //    var w = $container.width() - 50;
+        //    //var d = document.getElementById('test');
+        //    //var d = document.getElementById('teststep');
+        //    var nh = 0
+        //    var nw = 0
+
+        //    //steps = d.innerText;
+        //    //alert(d.innerText);
+        //    //alert(steps);
+        //    //d.innerText = step;
+        //    //nh = Math.floor(Math.random() * h);
+        //    //nw = Math.floor(Math.random() * w);
+        //    //alert(h)
+        //    //alert(w)
+        //    if (steps == 0) {
+        //        console.log(h);
+        //        console.log(w);
+        //        //nh = h/2;
+        //        //nw = w/2;
+        //        nh = h / 2;
+        //        nw = w / 2 + containermargin;
+        //    }
+        //    else if (steps == 1) {
+        //        //nh = h;
+        //        //nw = w-50;
+        //        nh = h - h;
+        //        nw = w + containermargin - 50;
+        //    }
+        //    else if (steps == 2) {
+        //        //nh = h+50;
+        //        //nw = w-50;
+        //        nh = h;
+        //        nw = w + containermargin - 50;
+        //    }
+        //    else if (steps == 3) {
+        //        //nh = h + 50;
+        //        //nw = w;
+        //        nh = h;
+        //        nw = w - w + containermargin;
+        //    }
+        //    else if (steps == 4) {
+
+        //        //nh = h;
+        //        //nw =w;
+        //        nh = h - h;
+        //        nw = w - w + containermargin;
+        //    }
+        //    else if (steps == 5) {
+        //        //nh = h / 2;
+        //        //nw = w / 2;
+        //        nh = h - h;
+        //        nw = w / 2 + containermargin;
+
+        //    }
+        //    else {
+
+        //    }
+
+
+        //    console.log(steps + ' ' + nh + ' ' + nw);
+
+        //    return [nh, nw];
+
+        //}
+
+        //function animateDiv($target, steps) {
+        //    //alert('run step ' +step);
+        //    var newq = makeNewPosition($target.parent(), steps);
+        //    var oldq = $target.offset();
+        //    var speed = calcSpeed([oldq.top, oldq.left], newq);
+
+        //    $target.animate({
+        //        top: newq[0],
+        //        left: newq[1]
+        //    }, speed, function () {
+
+        //        var b = 0;
+        //        if (steps == 5) {
+        //            steps = 0;
+        //        }
+        //        else
+        //            steps += 1;
+
+        //        //$.ajax({
+        //        //    type: 'POST',
+        //        //    url: 'Tour/IntroTour/',
+        //        //    data: '{"steps":"' +steps + '"}',
+        //        //    contenType: 'application/json; charset=utf-8',
+        //        //    datatype:'html',
+        //        //    success: function (data) {
+        //        //        alert(data+' succeded')
+        //        //    }
+        //        //})
+        //        $.post('Tour/IntroTour/', { steps: steps }, function (data) {
+        //            alert(data + ' succeded')
+        //        });
+        //        setTimeout(function () { animateDiv($target, steps) }, 10000);
+
+
+        //    });
+
+        //};
+
+        //function calcSpeed(prev, next) {
+
+        //    var x = Math.abs(prev[1] - next[1]);
+        //    var y = Math.abs(prev[0] - next[0]);
+
+        //    var greatest = x > y ? x : y;
+
+        //    var speedModifier = 0.1;
+
+        //    var speed = Math.ceil(greatest / speedModifier);
+
+        //    return speed;
+
+        //}
+
+
+
     </script>
+    <style>
+    /*#GameArea { background-image: url('~/../Resources/gamebackground.png') }*/
+    /*#divGameArea { background-image: url('https://www.google.se/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjZpLCIkIHgAhUIjiwKHe4ECPwQjRx6BAgBEAU&url=https%3A%2F%2Fwww.mestmotor.se%2Fautomotorsport%2Fartiklar%2Fnyheter%2F20180305%2Fvolvo-kor-om-alla-konkurrenter-xc40-ar-arets-bil%2F&psig=AOvVaw1BZ-yYXewA0Zw971IPNUkf&ust=1548237441722367') }*/
+    </style>
 </head>
+
+@model LivingCarPark.ViewModels.GameArea
+
 @{
     ViewData["Title"] = "CarPark";
 }
-@*<textarea id="display" rows="20" cols="200"></textarea>*@
-<div>
-    <table>
-        <tr id="l1"></tr>
-        <tr id="l2"></tr>
-        <tr id="l3"></tr>
-        <tr id="l4"></tr>
-        <tr id="l5"></tr>
-        <tr id="l6"></tr>
-        <tr id="l7"></tr>
-    </table>
-   
-    @*<label id="l2"></label>
-    <label id="l3"></label>
-    <label id="l4"></label>
-    <label id="l5"></label>
-    <label id="l6"></label>
-    <label id="l7"></label>*@
-</div>
-<h2>välkomment till carpark</h2>
 
+<h2>CarPark</h2>
+
+<div>
+    <h4>GameArea</h4>
+    <hr />
+    <dl class="dl-horizontal">
+    </dl>
+</div>
+<div>
+    <div id="GameArea" style="background-image: url('~/../Resources/gamebackground.png'); height: 500px;width:1000px; position:absolute;">
+        <div id="spawnpoint1" style="left:1px; top:450px; height:1px; width:1px; background-color:orange;position:absolute;"></div>
+        <div id="garagebotlevel" style="height:50px; width:100px; background-color:dimgrey;top:450px;bottom:10px;left:449px; position:absolute;"</div>
+        <div id="spawnpoint2" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
+        <div id="point2car0" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
+        <div id="point2car1" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
+        <div id="point2car2" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
+        <div id="point2car3" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
+        <div id="point2car4" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
+        <div id="point2car5" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
+        <div id="point2car6" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
+        <div id="point2car7" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
+        <div id="point2car8" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
+        <div id="point2car9" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
+        <div id="point2car10" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
+    </div>
+        @*<h4>GameArea with colour</h4>*@
+   @*<img src="~/Resources/gamebackground.jpg" />*@
+   
+    <div id="Gamestats" style="background-color:lightgray; height: 200px;width:1000px; border-color:black; border-style:dashed; top:510px;position:absolute">
+        <label id="l3"></label>
+        <label id="l4"></label>
+        
+    </div>
+    @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>*@
+</div>

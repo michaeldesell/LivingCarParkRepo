@@ -31,12 +31,22 @@ namespace LivingCarPark.Controllers
             
         }
         //// GET: /<controller>/
-        [Authorize]
+        [AllowAnonymous]
         public IActionResult Index()
         {
 
+            return RedirectToAction("Login", "Account");
+         
 
-            var data=Factory.ApiClientFactory.Instance.GetUsers();
+         
+        }
+
+        [Authorize]
+        public IActionResult ShowReport()
+        {
+
+
+            var data = Factory.ApiClientFactory.Instance.GetUsers();
             List<ViewUserReport> users = data.Result.Select(x => new ViewUserReport() { Username = x.Email, Firstname = x.FirstName }).ToList();
 
             return View(users);

@@ -35,7 +35,7 @@ namespace LivingCarPark.Controllers
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "App");
+                return RedirectToAction("Index", "CarPark");
 
             }
 
@@ -55,7 +55,7 @@ namespace LivingCarPark.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "App");
+                    return RedirectToAction("Index", "CarPark");
 
                 }
             }
@@ -91,7 +91,7 @@ namespace LivingCarPark.Controllers
                     _logger.LogInformation("User created a new account with password");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password");
-                    return RedirectToAction("Index", "App");
+                    return RedirectToAction("Login", "App");
                 }
 
                 _logger.LogError(result.Errors.ToString());

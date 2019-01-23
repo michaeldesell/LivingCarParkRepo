@@ -13,7 +13,10 @@ namespace CarParkApi.Model
             [DataMember(Name = "IsSuccess")]
             public bool IsSuccess { get; set; }
 
-            [DataMember(Name = "ReturnMessage")]
+        [DataMember(Name = "DataNotExist")]
+        public bool DataExist { get; set; }
+
+        [DataMember(Name = "ReturnMessage")]
             public string ReturnMessage { get; set; }
 
             [DataMember(Name = "Data")]

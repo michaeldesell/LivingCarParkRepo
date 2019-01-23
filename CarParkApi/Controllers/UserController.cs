@@ -71,23 +71,74 @@ namespace CarParkApi.Controllers
 
         [HttpPost]
         [Route("GetUserCarPark")]
-        public IActionResult GetUserCarPark(UserModel login)
+        public IActionResult GetUserCarPark(Carpark login)
         {
-            //return new string[] { "value1", "value2" };
-            UserCarPark Data = new UserCarPark()
+    
+            Carpark userpark = _context.Carparks.FirstOrDefault(x => x.User.Id == login.User.Id);
+           
+
+            var msg = new Message<Carpark>();
+            if (userpark!=null)
             {
-                Id = 1,
-                Floors = 1,
-                Parkingspace = 4,
-                Name = " min carpark",
-                Amountofcars = 0
+            
+                CarParkUser user = _context.Users.FirstOrDefault(x => x.Id == login.User.Id);
+
+                userpark.User = user;
+
+                msg.IsSuccess = true;
+                msg.DataExist = true;
+                msg.Data = userpark;
+                msg.ReturnMessage = "your CarPark has been retrieved succesfully";
+            }
+            else
+            {
+                msg.IsSuccess = true;
+                msg.DataExist = false;
+                msg.Data = new Carpark();
+                msg.ReturnMessage = "You must create a carpark";
+            }
+          
+         
+            //var data = list;
+            return Ok(msg);
+        }
+
+        [HttpPost]
+        [Route("SaveCarPark")]
+        public IActionResult SaveCarPark(Tuple<Carpark,string> login)
+        {
+
+            Tuple<Carpark, string> retur = new Tuple<Carpark, string>(new Carpark(),login.Item2);
 
 
-            };
-            var msg = new Message<UserCarPark>();
-            msg.IsSuccess = true;
-            msg.Data = Data;
-            msg.ReturnMessage = "your CarPark has been retrieved succesfully";
+            //Carpark userpark = _context.Carparks.FirstOrDefault(x => x.User.Id == login.User.Id);
+            var msg = new Message<Tuple<Carpark,string>>();
+            CarParkUser User = _context.Users.FirstOrDefault(x => x.Id == login.Item2);
+            if (User != null)
+            {
+                Carpark newcarpark = login.Item1;
+                newcarpark.User = User;
+                newcarpark.Floors = 1;
+
+
+                _context.Add(newcarpark);
+                _context.SaveChanges();
+
+                retur =new Tuple<Carpark, string>(newcarpark,login.Item2);
+                msg.IsSuccess = true;
+                msg.DataExist = true;
+                msg.Data = retur;
+                msg.ReturnMessage = "your CarPark has been retrieved succesfully";
+            }
+            else
+            {
+                msg.IsSuccess = true;
+                msg.DataExist = false;
+                msg.Data = retur;
+                msg.ReturnMessage = "Your user was not present";
+            }
+
+
             //var data = list;
             return Ok(msg);
         }

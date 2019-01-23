@@ -9,6 +9,7 @@ using LivingCarPark.Model;
 using Microsoft.Extensions.Options;
 using WebApiModels.Model;
 using TextHelper;
+using LivingCarPark.ViewModels;
 
 using LivingCarPark.Factory;
 
@@ -23,37 +24,70 @@ namespace LivingCarPark.Controllers
             appSettings = app;
             Utility.ApplicationSettings.WebApiUrl = appSettings.Value.WebApiBaseUrl;
         }
+
+        //[authorize]
         public IActionResult Index()
         {
+
+          
+            var data = User.Identity;
+            //var data = ApiClientFactory.Instance.GetUserCarPark(new UserModel());
+
+                Carpark usercp = new Carpark();
+                usercp.User = new CarParkUser() { Id = User.Claims.FirstOrDefault().Value };
+                var data2 = ApiClientFactory.Instance.GetUserCarPark(usercp);
+            if(data2.Result.DataExist && data2.Result.IsSuccess)
+            {
+                return RedirectToAction("CarPark", "CarPark");
+            }
+            else if(!data2.Result.DataExist)
+            {
+                return RedirectToAction("NewCarPark", "CarPark");
+            }
+                
             return View();
         }
 
         public async Task<IActionResult> CarPark()
         {
-            //MZ this is only here to b able to test the logic
-            //CarParkDataLogic.CarsArrivingAndLeaving();
-            //var data = await ApiClientFactory.Instance.GetUsers();
 
-            //UserModel login = new UserModel()
-            //{
-            //    Username = "Goran",
-            //    Password = "Gurka",
-            //};
-            //var data2 = await ApiClientFactory.Instance.LoginUser(login);
+            Carpark usercp = new Carpark();
+            usercp.User = new CarParkUser() { Id = User.Claims.FirstOrDefault().Value };
+            var data2 = ApiClientFactory.Instance.GetUserCarPark(usercp);
 
-            //UserCarPark logincarpark = new UserCarPark()
-            //{
-            //    Fk_user=login.Id
-            //};
+            GameArea ga = new GameArea();
+            ga.carpark = data2.Result.Data;
+            ga.user = data2.Result.Data.User;
+            return View(ga);
+        }
 
-            //var data3 = await ApiClientFactory.Instance.GetUserCarPark(logincarpark);
-
-            
-            //var data4 = await ApiClientFactory.Instance.ChangeCars(new WebApiModels.ChangeCars() { Fk_carpark=data3.Data.Id,change_in_cars=3});
+        public IActionResult NewCarPark()
+        {
+           
             return View();
         }
 
-       
+        [HttpPost]
+        public async Task<IActionResult> CreateNewCarPark(CreateCarpark creation)
+        {
+
+
+            if (ModelState.IsValid)
+            {
+
+                Tuple<Carpark, string> transport = new Tuple<Carpark, string>(new Carpark() { Name = creation.CarParkName }, User.Claims.FirstOrDefault().Value);
+                var data = ApiClientFactory.Instance.SaveCarpark(transport);
+
+                if(data.Result.IsSuccess)
+                {
+                    return RedirectToAction("CarPark", "CarPark");
+                }
+            }
+
+                return View();
+        }
+
+
         [HttpGet]
         public async Task<int[]> CarsArrivingAndLeaving()
         {

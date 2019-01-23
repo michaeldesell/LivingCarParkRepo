@@ -18,6 +18,13 @@ namespace CoreApiClient
             return await GetAsync<List<CarParkUser>>(requestUrl);
         }
 
+        public async Task<Message<Tuple<Carpark, string>>> SaveCarpark(Tuple<Carpark, string> model)
+        {
+            var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "User/SaveCarPark"));
+            return await PostAsync<Tuple<Carpark,string>>(requestUrl,model);
+        }
+
         public async Task<Message<UserModel>> LoginUser(UserModel model)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
@@ -25,11 +32,11 @@ namespace CoreApiClient
             return await PostAsync<UserModel>(requestUrl, model);
         }
 
-        public async Task<Message<UserCarPark>> GetUserCarPark(UserCarPark model)
+        public async Task<Message<Carpark>> GetUserCarPark(Carpark id)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
                 "User/GetUserCarPark"));
-            return await PostAsync<UserCarPark>(requestUrl, model);
+            return await PostAsync<Carpark>(requestUrl, id);
         }
 
         public async Task<Message<UserCarPark>> SaveCars(UserCarPark model)
