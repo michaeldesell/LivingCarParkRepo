@@ -9,6 +9,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
+using CarParkApi.Data;
 
 namespace CarParkApi.Service
 {
@@ -16,23 +18,27 @@ namespace CarParkApi.Service
     public interface iapplicationservice
         {
         applicationlogin Authenticate(string username, string password);
-        IEnumerable<applicationlogin> GetAll();
+        //IEnumerable<applicationlogin> GetAll();
     }
 
 
     public class applicationservice:iapplicationservice
     {
-        private List<applicationlogin> applogins = new List<applicationlogin>() { new applicationlogin() { id = 0, username = "LivingCarParkWeb", password = "manycars" } };
+        private LivingCarParkContext _context;
         private readonly appsettings _appsettings;
-
-        public applicationservice(IOptions<appsettings> appsettings)
+       
+        public applicationservice(IOptions<appsettings> appsettings,LivingCarParkContext context)
         {
             _appsettings = appsettings.Value;
+            _context = context;
         }
 
         public applicationlogin Authenticate(string username, string password)
         {
-            var apps = applogins.FirstOrDefault(x => x.username == username && x.password == password);
+
+
+            //var apps = applogins.FirstOrDefault(x => x.username == username && x.password == password);
+            var apps = _context.ApplicationLogins.FirstOrDefault(x => x.username == username && x.password == password);
 
             if (apps == null)
                 return null;
@@ -50,19 +56,25 @@ namespace CarParkApi.Service
             };
 
             var token = Tokenhandler.CreateToken(tokendescriptor);
-            apps.Token = Tokenhandler.WriteToken(token);
-            apps.password = null;
+            applicationlogin all = new applicationlogin()
+            {
+                Token = Tokenhandler.WriteToken(token),
+                password = null
+                
+            };
+            //apps.Token = Tokenhandler.WriteToken(token);
+            //apps.password = null;
 
-            return apps;
+            return all;
         } 
-        public IEnumerable<applicationlogin> GetAll()
-        {
-            // return users without passwords
-            return applogins.Select(x => {
-                x.password = null;
-                return x;
-            });
-        }
+        //public IEnumerable<applicationlogin> GetAll()
+        //{
+        //    // return users without passwords
+        //    return _context.ApplicationLogins.Select(x => {
+        //        x.password = null;
+        //        return x;
+        //    });
+        //}
 
 
     }

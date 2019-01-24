@@ -2,7 +2,11 @@
   "ConnectionStrings": {
     "DBConnectionString": "server=(localdb)\\MSSQLLocalDB;Database=LivingCarParkDb;Integrated Security=true;MultipleActiveResultSets=true"
   },
-
+  "Applogin": {
+    "username": "this carpark is really growing",
+    "password": ""
+  },
+  
   "AppSettings": {
     "Secret": "this carpark is really growing"
   },

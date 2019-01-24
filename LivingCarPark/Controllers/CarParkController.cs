@@ -25,6 +25,8 @@ namespace LivingCarPark.Controllers
         {
             appSettings = app;
             Utility.ApplicationSettings.WebApiUrl = appSettings.Value.WebApiBaseUrl;
+            Utility.ApplicationSettings.username = appSettings.Value.username;
+            Utility.ApplicationSettings.password = appSettings.Value.password;
         }
 
         //[authorize]
@@ -100,10 +102,11 @@ namespace LivingCarPark.Controllers
         public async Task<int[]> CarsArrivingAndLeaving()
         {
             TestingRepo.init();
-          
 
-            int[] CarData= CarParkDataLogic.CarsArrivingAndLeaving(TestingRepo.TestingCarPark);
-            if(CarData[1]!=0)
+
+            //int[] CarData= CarParkDataLogic.CarsArrivingAndLeaving(TestingRepo.TestingCarPark);
+            int[] CarData = new int[10];
+            if (CarData[1]!=0)
             {
                
                 WebApiModels.ChangeCars carsupdate = new WebApiModels.ChangeCars()

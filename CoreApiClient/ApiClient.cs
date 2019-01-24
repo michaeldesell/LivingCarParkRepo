@@ -13,15 +13,20 @@ namespace CoreApiClient
     {
         private readonly HttpClient _HttpCLient;
         private Uri BaseEndpoint { get; set; }
+        private string AppUser { get; set; }
+        private string AppPass { get; set; }
         private bool alreadydone = false;
         private string Token { get; set; }
-        public ApiClient(Uri baseEndpoint)
+       
+        public ApiClient(Uri baseEndpoint,string username,string password)
         {
             if (baseEndpoint == null)
             {
                 throw new ArgumentNullException("baseEndpoint");
             }
             BaseEndpoint = baseEndpoint;
+            AppUser = username;
+            AppPass = password;
             _HttpCLient = new HttpClient();
         }
         

@@ -5,7 +5,9 @@
   },
 
   "MySettings": {
-    "WebApiBaseUrl": "http://localhost:8888/api/"
+    "WebApiBaseUrl": "http://localhost:8888/api/",
+    "username":"LivingCarParkWeb",
+    "password":"manycars" 
   },
 
   "AppSettings": {
