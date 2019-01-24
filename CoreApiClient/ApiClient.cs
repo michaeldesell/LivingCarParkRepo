@@ -88,20 +88,13 @@ namespace CoreApiClient
             if(Token==null && !alreadydone)
                 {
                 alreadydone = true;
-                var result=Authenticate(new CarParkApi.JwtModel.applicationlogin() { username = "LivingCarParkWeb", password = "manycars" });
+                var result=Authenticate(new CarParkApi.JwtModel.applicationlogin() { username = AppUser, password = AppPass });
 
                 Token = result.Result.Data.Token;
                
             }
 
-            //_HttpCLient.DefaultRequestHeaders.Remove("Bearer");
-            //_HttpCLient.DefaultRequestHeaders.Add("Bearer", Token);
             _HttpCLient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
-            
-
-            //A class for adding customheaders in case of wee neew to
-
-
         }
     }
 }
