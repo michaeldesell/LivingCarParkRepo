@@ -95,21 +95,21 @@ namespace LivingCarPark.Controllers
             TestingRepo.init();
           
 
-            int[] CarData= CarParkDataLogic.CarsArrivingAndLeaving(TestingRepo.TestingCarPark);
-            if(CarData[1]!=0)
-            {
+            //int[] CarData= CarParkDataLogic.CarsArrivingAndLeaving(TestingRepo.TestingCarPark);
+            //if(CarData[1]!=0)
+            //{
 
-                WebApiModels.ChangeCars carsupdate = new WebApiModels.ChangeCars()
-                {
-                    Fk_carpark = TestingRepo.TestingCarPark.Id,
-                    change_in_cars = CarData[1],
-                    Floors = CarData[7],
-                    develop_pressure = CarData[5],
-                    carpark_rating = CarData[6]
+            //    WebApiModels.ChangeCars carsupdate = new WebApiModels.ChangeCars()
+            //    {
+            //        Fk_carpark = TestingRepo.TestingCarPark.Id,
+            //        change_in_cars = CarData[1],
+            //        Floors = CarData[7],
+            //        develop_pressure = CarData[5],
+            //        carpark_rating = CarData[6]
 
-                };
-                var data4 = await ApiClientFactory.Instance.ChangeCars(carsupdate);
-            }
+            //    };
+            //    var data4 = await ApiClientFactory.Instance.ChangeCars(carsupdate);
+            //}
            
             
             return Functions.TellWhatHappends(CarData);

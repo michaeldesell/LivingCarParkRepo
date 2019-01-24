@@ -118,7 +118,7 @@ namespace CarParkApi.Controllers
             {
                 Carpark newcarpark = login.Item1;
                 newcarpark.User = User;
-                newcarpark.Floors = 1;
+                //newcarpark.Floors = 1;
 
 
                 _context.Add(newcarpark);
@@ -153,8 +153,8 @@ namespace CarParkApi.Controllers
 
             Carpark cp = _context.Carparks.FirstOrDefault(x => x.Id == change_in_cars.Fk_carpark);
 
-            cp.Amountofcars = change_in_cars.change_in_cars;
-            cp.Floors = change_in_cars.Floors;
+            cp.Amountparkedcars = change_in_cars.change_in_cars;
+            //cp.Floors = change_in_cars.Floors;
             cp.develop_pressure = change_in_cars.develop_pressure;
             cp.carpark_rating = change_in_cars.carpark_rating;
 
