@@ -154,4 +154,25 @@
   <data name="Yellow_Car" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Yellow Car.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Blue_car1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Blue car.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="gamebackground1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gamebackground.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Green_car1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Green car.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="parkinggarage_entrence_empty1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\parkinggarage entrence empty.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="parkinggarage_entrence_full1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\parkinggarage entrence full.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Red_car1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Red car.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Yellow_Car1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Yellow Car.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

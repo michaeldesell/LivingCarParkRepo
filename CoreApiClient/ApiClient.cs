@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using WebApiModels;
+using CoreApiClient;
 
 namespace CoreApiClient
 {
@@ -12,17 +13,23 @@ namespace CoreApiClient
     {
         private readonly HttpClient _HttpCLient;
         private Uri BaseEndpoint { get; set; }
-
-        public ApiClient(Uri baseEndpoint)
+        private string AppUser { get; set; }
+        private string AppPass { get; set; }
+        private bool alreadydone = false;
+        private string Token { get; set; }
+       
+        public ApiClient(Uri baseEndpoint,string username,string password)
         {
             if (baseEndpoint == null)
             {
                 throw new ArgumentNullException("baseEndpoint");
             }
             BaseEndpoint = baseEndpoint;
+            AppUser = username;
+            AppPass = password;
             _HttpCLient = new HttpClient();
         }
-
+        
         private async Task<T> GetAsync<T>(Uri requestUrl)
         {
             addHeaders();
@@ -78,9 +85,16 @@ namespace CoreApiClient
 
         private void addHeaders()
         {
-            //A class for adding customheaders in case of wee neew to
-            //_httpClient.DefaultRequestHeaders.Remove("userIP");
-            //_httpClient.DefaultRequestHeaders.Add("userIP", "192.168.1.1");
+            if(Token==null && !alreadydone)
+                {
+                alreadydone = true;
+                var result=Authenticate(new CarParkApi.JwtModel.applicationlogin() { username = AppUser, password = AppPass });
+
+                Token = result.Result.Data.Token;
+               
+            }
+
+            _HttpCLient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
         }
     }
 }

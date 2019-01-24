@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>mykey.pfx</AssemblyOriginatorKeyFile>
+    <ApplicationIcon />
+    <Win32Resource />
   </PropertyGroup>
 
   <ItemGroup>
@@ -107,6 +109,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Model\JwtHelper\" />
     <Folder Include="Tutorials\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

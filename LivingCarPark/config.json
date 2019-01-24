@@ -5,6 +5,17 @@
   },
 
   "MySettings": {
-    "WebApiBaseUrl": "http://localhost:8888/api/"
+    "WebApiBaseUrl": "http://localhost:8888/api/",
+    "username":"LivingCarParkWeb",
+    "password":"manycars" 
+  },
+
+  "AppSettings": {
+    "Secret": "this carpark is really growing"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning"
+    }
   }
 }

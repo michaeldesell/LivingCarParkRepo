@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LivingCarPark.Model
+namespace CarParkApi.Data.Entities
 {
-    public class MySettingsModel
+    public class ApplicationLogin
     {
-        public string WebApiBaseUrl { get; set; }
+        public int id { get; set; }
         public string username { get; set; }
         public string password { get; set; }
+        public string Token { get; set; }
     }
 }
+

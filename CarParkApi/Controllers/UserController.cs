@@ -7,10 +7,13 @@ using Microsoft.Extensions.Options;
 using CarParkApi.Model;
 using CarParkApi.Data;
 using CarParkApi.Data.Entities;
-
+using CarParkApi.JwtModel;
+using CarParkApi.Service;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarParkApi.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
@@ -19,11 +22,48 @@ namespace CarParkApi.Controllers
 
         private readonly IOptions<Model.MySettingsModel> appSettings;
         private LivingCarParkContext _context;
-
-        public UserController(IOptions<Model.MySettingsModel> app, LivingCarParkContext context)
+        private iapplicationservice _applicationservice;
+        public UserController(IOptions<Model.MySettingsModel> app, LivingCarParkContext context,iapplicationservice applicationservice)
         {
             appSettings = app;
             _context = context;
+            _applicationservice = applicationservice;
+
+        }
+
+        // GET api/values
+        //[AllowAnonymous]
+        //[HttpPost]
+        //[Route("Authenticate")]
+        //public IActionResult Authenticate(string username,string password)
+        //{
+        //    //[FromBody]applicationlogin appParam)
+        //    applicationlogin appParam = new applicationlogin();
+        //    var appslogins = _applicationservice.Authenticate(username, password);
+        //    if (appslogins == null)
+        //        return BadRequest(new { message ="you shall not pass!! wrong pass or user!"});
+
+        //    return Ok(appslogins);
+
+        //}
+
+        // GET api/values
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("Authenticate")]
+        public IActionResult Authenticate([FromBody]applicationlogin appparam)
+        {
+            //[FromBody]applicationlogin appParam)
+            applicationlogin appParam = new applicationlogin();
+            var appslogins = _applicationservice.Authenticate(appparam.username, appparam.password);
+            if (appslogins == null)
+                return BadRequest(new { message = "you shall not pass!! wrong pass or user!" });
+
+            var msg = new Message<applicationlogin>();
+            msg.Data = appslogins;
+            msg.DataExist = true;
+            msg.IsSuccess = true;
+            return Ok(msg);
 
         }
         // GET api/values

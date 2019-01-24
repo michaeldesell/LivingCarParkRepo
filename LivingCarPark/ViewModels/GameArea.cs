@@ -10,5 +10,8 @@ namespace LivingCarPark.ViewModels
     {
       public CarParkUser user { get; set; }
         public Carpark carpark { get; set; }
+        public byte[] backgroundimage { get; set; }
+        public byte[] parkinggarage { get; set; }
+        public byte[] redcar { get; set; }
     }
 }

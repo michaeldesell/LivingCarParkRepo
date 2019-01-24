@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
 using CarParkApi.Data;
 using CarParkApi.Data.Entities;
+using Microsoft.AspNetCore.Mvc;
+using LivingCarPark.Model;
+
 
 namespace LivingCarPark
 {
@@ -49,11 +52,12 @@ namespace LivingCarPark
                 .AddEntityFrameworkStores<LivingCarParkContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc(
-                
-                );
+            services.AddCors();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            // configure strongly typed settings objects
+            var appSettingsSection = _config.GetSection("AppSettings");
+            services.Configure<appsettings>(appSettingsSection);
 
-          
 
             services.Configure<MySettingsModel>(_config.GetSection("MySettings"));
         }
