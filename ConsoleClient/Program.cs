@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Timers;
 using WebApiModels.Model;
 using System.Threading;
+using CarParkApi.Data.Entities;
 
 namespace ConsoleClient
 {
@@ -11,46 +12,48 @@ namespace ConsoleClient
     {
 
 
-        public static UserCarPark carpark = null;
+        public static Carpark carpark = null;
         static void Main(string[] args)
         {
-            bool run = true;
-            UserCarPark carpark = new UserCarPark();
-            carpark.Amountofcars = 0;
-            carpark.Floors = 0;
-            carpark.Parkingspace = 8;
-            Console.WriteLine("Amount of cars: " + carpark.Amountofcars);
-            Console.WriteLine("Floors: " + carpark.Floors);
-            Console.WriteLine("Parking space: " + carpark.Parkingspace);
-            Console.WriteLine("Rating: " + carpark.carpark_rating);
-            Console.WriteLine("Dev. pressure: " + carpark.develop_pressure);
-
-            do
-            {
-                Thread.Sleep(1000);
-                CarsArrivingAndLeaving(carpark);
-                Console.Clear();
-                Console.WriteLine("Amount of cars: " + carpark.Amountofcars);
-                Console.WriteLine("Floors: " + carpark.Floors);
-                Console.WriteLine("Parking space: " + carpark.Parkingspace);
-                Console.WriteLine("Rating: " + carpark.carpark_rating);
-                Console.WriteLine("Dev. pressure: " + carpark.develop_pressure);
-
-
-            }
-
-            while (run);
+            Carpark carpark = new Carpark();
+            CarsArrivingAndLeaving(carpark);
 
 
         }
 
-        public static void CarsArrivingAndLeaving(UserCarPark carpark)
+        public static void CarsArrivingAndLeaving(Carpark carpark)
         {
-            Console.WriteLine("Timer was raised");
+            while (true == true)
+            {
+                carpark = CarParkDataLogic.CarsArrivingAndLeaving(carpark);
+                foreach (Floor f in carpark.Floors)
+                {
+                    Console.WriteLine("Floor: " + f.Floornumber);
 
-            carpark = CarParkDataLogic.CarsArrivingAndLeaving(carpark);
+                    foreach (Parkingspace ps in f.Parkingspaces)
+                    {
+                        Console.WriteLine("-------------------------------------");
+                        Console.WriteLine("Parking space: " + ps.Name);
+                        Console.WriteLine("Available: " + ps.Available);
+                        if (ps.Parkedcar != null)
+                            Console.WriteLine("Parked car: " + ps.Parkedcar.Name);
+                    }
 
-            
+                }
+                Console.WriteLine("Cars arriving: " + carpark.Carsarriving);
+                Console.WriteLine("Cars leaving: " + carpark.Carsleaving);
+                Console.WriteLine("Floors: " + carpark.Floors.Count);
+                Console.WriteLine("Parked cars: " + carpark.Amountparkedcars);
+                Console.WriteLine("Rating: " + carpark.carpark_rating);
+                Console.WriteLine("Dev. pressure: " + carpark.develop_pressure);
+
+                Console.ReadKey();
+            }
+
+
+
+
+
         }
     }
 }
