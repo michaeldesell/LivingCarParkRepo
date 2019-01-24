@@ -7,6 +7,7 @@ using LivingCarPark.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace LivingCarPark.Controllers
@@ -16,12 +17,14 @@ namespace LivingCarPark.Controllers
         private ILogger<AccountController> _logger;
         private SignInManager<CarParkUser> _signInManager;
         private UserManager<CarParkUser> _userManager;
+        private IMemoryCache _memory;
 
-        public AccountController(ILogger<AccountController> logger, SignInManager<CarParkUser> signInManager, UserManager<CarParkUser> userManager)
+        public AccountController(ILogger<AccountController> logger, SignInManager<CarParkUser> signInManager, UserManager<CarParkUser> userManager,IMemoryCache  memory)
         {
             _logger = logger;
             _signInManager = signInManager;
             _userManager = userManager;
+            _memory = memory;
         }
 
 

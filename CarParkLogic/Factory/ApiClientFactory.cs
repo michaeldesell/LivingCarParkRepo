@@ -1,5 +1,6 @@
 ﻿using CarParkLogic.Utility;
 using CoreApiClient;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,17 @@ namespace CarParkLogic.Factory
         private static Uri apiUri;
         private static string username;
         private static string password;
-        private static Lazy<ApiClient> restClient = new Lazy<ApiClient>(()=>new ApiClient(apiUri,username,password),LazyThreadSafetyMode.ExecutionAndPublication);
+        private static IMemoryCache _memory;
+        private static Lazy<ApiClient> restClient = new Lazy<ApiClient>(()=>new ApiClient(apiUri,username,password, _memory),LazyThreadSafetyMode.ExecutionAndPublication);
 
-        static ApiClientFactory()
+          static ApiClientFactory()
         {
             apiUri = new Uri(ApplicationSettings.WebApiUrl);
             username = ApplicationSettings.username;
             password = ApplicationSettings.password;
+            if (_memory == null)
+                _memory = null;
+
 
         }
 

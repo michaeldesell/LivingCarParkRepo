@@ -10,6 +10,7 @@ using CarParkApi.Model;
 using Microsoft.Extensions.Configuration;
 using CarParkApi.Data.Entities;
 using LivingCarPark.ViewModels;
+using Microsoft.Extensions.Caching.Memory;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,11 +22,13 @@ namespace LivingCarPark.Controllers
 
         private readonly IOptions<MySettingsModel> appSettings;
         private IConfiguration _config;
+        private IMemoryCache _memory;
 
-        public AppController(IOptions<MySettingsModel> app,IConfiguration config)
+        public AppController(IOptions<MySettingsModel> app,IConfiguration config,IMemoryCache memory)
         {
             appSettings = app;
             _config = config;
+            _memory = memory;
             Utility.ApplicationSettings.WebApiUrl = appSettings.Value.WebApiBaseUrl;
             Utility.ApplicationSettings.WebApiUrl = config["MySettings:WebApiBaseUrl"];
             

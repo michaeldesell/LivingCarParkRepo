@@ -13,6 +13,7 @@ using LivingCarPark.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using LivingCarPark.Factory;
 using LivingCarPark.Properties;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace LivingCarPark.Controllers
 {
@@ -20,10 +21,11 @@ namespace LivingCarPark.Controllers
     public class CarParkController : Controller
     {
         private readonly IOptions<MySettingsModel> appSettings;
-    
-        public CarParkController(IOptions<MySettingsModel> app)
+        private IMemoryCache _memory;
+        public CarParkController(IOptions<MySettingsModel> app,IMemoryCache memory)
         {
             appSettings = app;
+            _memory = memory;
             Utility.ApplicationSettings.WebApiUrl = appSettings.Value.WebApiBaseUrl;
             Utility.ApplicationSettings.username = appSettings.Value.username;
             Utility.ApplicationSettings.password = appSettings.Value.password;

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using WebApiModels;
 using CoreApiClient;
 
+using Microsoft.Extensions.Caching.Memory;
+
 namespace CoreApiClient
 {
    
@@ -15,10 +17,11 @@ namespace CoreApiClient
         private Uri BaseEndpoint { get; set; }
         private string AppUser { get; set; }
         private string AppPass { get; set; }
+        private IMemoryCache _memory { get; set; }
         private bool alreadydone = false;
         private string Token { get; set; }
        
-        public ApiClient(Uri baseEndpoint,string username,string password)
+        public ApiClient(Uri baseEndpoint,string username,string password,IMemoryCache memory)
         {
             if (baseEndpoint == null)
             {
@@ -27,6 +30,8 @@ namespace CoreApiClient
             BaseEndpoint = baseEndpoint;
             AppUser = username;
             AppPass = password;
+            _memory = memory;
+
             _HttpCLient = new HttpClient();
         }
         
@@ -56,6 +61,28 @@ namespace CoreApiClient
             }
         }
 
+        private async Task<Message<T>> PostTokenAsync<T>(Uri requestUrl, T content)
+        {
+            GetAuthentication();
+            var response = await _HttpCLient.PostAsync(requestUrl.ToString(), CreateHttpContent<T>(content));
+            response.EnsureSuccessStatusCode();
+            var data = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Message<T>>(data);
+        }
+
+        private void GetAuthentication()
+        {
+
+            //    var result = Authenticate(new CarParkApi.JwtModel.applicationlogin() { username = AppUser, password = AppPass });
+
+            //MemoryCacheEntryOptions cacheExpirationOptions = new MemoryCacheEntryOptions();
+            //cacheExpirationOptions.AbsoluteExpiration = DateTime.Now.AddMinutes(60);
+            //cacheExpirationOptions.Priority = CacheItemPriority.Normal;
+            //_memory.Set<string>("Token", result.Result.Data.Token,cacheExpirationOptions); ;
+
+            
+        }
+
         private async Task<Message<T>> PostAsync<T>(Uri requestUrl, T content)
         {
             addHeaders();
@@ -64,6 +91,7 @@ namespace CoreApiClient
             var data = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Message<T>>(data);
         }
+
 
 
         private async Task<Message<T1>> PostAsync<T1, T2>(Uri requestUrl, T2 content)
@@ -85,13 +113,16 @@ namespace CoreApiClient
 
         private void addHeaders()
         {
-            if(Token==null && !alreadydone)
+
+            
+            //_memory.TryGetValue("Token",out Token);
+            if (Token==null && !alreadydone)
                 {
                 alreadydone = true;
                 var result=Authenticate(new CarParkApi.JwtModel.applicationlogin() { username = AppUser, password = AppPass });
 
+
                 Token = result.Result.Data.Token;
-               
             }
 
             _HttpCLient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);

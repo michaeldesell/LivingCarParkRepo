@@ -60,6 +60,8 @@ namespace LivingCarPark
 
 
             services.Configure<MySettingsModel>(_config.GetSection("MySettings"));
+
+            services.AddMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
