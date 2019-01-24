@@ -3,7 +3,7 @@ using CarParkLogic;
 using System.Diagnostics;
 using System.Timers;
 using WebApiModels.Model;
-
+using System.Threading;
 
 namespace ConsoleClient
 {
@@ -11,27 +11,46 @@ namespace ConsoleClient
     {
 
 
-        public static UserCarPark currentcars = null;
+        public static UserCarPark carpark = null;
         static void Main(string[] args)
         {
-             Timer watch = new Timer();
+            bool run = true;
+            UserCarPark carpark = new UserCarPark();
+            carpark.Amountofcars = 0;
+            carpark.Floors = 0;
+            carpark.Parkingspace = 8;
+            Console.WriteLine("Amount of cars: " + carpark.Amountofcars);
+            Console.WriteLine("Floors: " + carpark.Floors);
+            Console.WriteLine("Parking space: " + carpark.Parkingspace);
+            Console.WriteLine("Rating: " + carpark.carpark_rating);
+            Console.WriteLine("Dev. pressure: " + carpark.develop_pressure);
 
-        watch.Interval = 10000;
-            watch.Enabled = true;
-            watch.Elapsed += new ElapsedEventHandler(CarsArrivingAndLeaving);
-            watch.AutoReset = true;
-            watch.Start();
+            do
+            {
+                Thread.Sleep(1000);
+                CarsArrivingAndLeaving(carpark);
+                Console.Clear();
+                Console.WriteLine("Amount of cars: " + carpark.Amountofcars);
+                Console.WriteLine("Floors: " + carpark.Floors);
+                Console.WriteLine("Parking space: " + carpark.Parkingspace);
+                Console.WriteLine("Rating: " + carpark.carpark_rating);
+                Console.WriteLine("Dev. pressure: " + carpark.develop_pressure);
 
-            Console.ReadKey();
-          
+
+            }
+
+            while (run);
+
+
         }
 
-        public  static void CarsArrivingAndLeaving(object o,ElapsedEventArgs e)
+        public static void CarsArrivingAndLeaving(UserCarPark carpark)
         {
-            //Console.WriteLine("Timer was raised");
-            //currentcars= CarParkDataLogic.CarsArrivingAndLeaving(currentcars);
+            Console.WriteLine("Timer was raised");
 
-            //Console.WriteLine(" Current cars in carpark is " + currentcars.ToString());
+            carpark = CarParkDataLogic.CarsArrivingAndLeaving(carpark);
+
+            
         }
     }
 }

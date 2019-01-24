@@ -2,6 +2,8 @@
 using CarParkLogic.Factory;
 using System.Threading.Tasks;
 using WebApiModels.Model;
+using System.Collections;
+
 
 namespace CarParkLogic
 {
@@ -12,50 +14,60 @@ namespace CarParkLogic
          * We want to keep logic and calculations away from the controller to keep the code as clean
          * as possible.
          */
-        public static int[] CarsArrivingAndLeaving(UserCarPark currentcarsinpark=null)
+        public static UserCarPark CarsArrivingAndLeaving(UserCarPark carpark)
         {
+            ArrayList arrivingque = null;
+            ArrayList leavingque = null;
+            bool CarsareArriving = false;
+            bool CarsareLeaving = false;
 
-            //currentcarsinpark should not be zero. WHen db is in place we need to actually fetch the current amount of cars from db.
-            //int currentcarsinpark = 0;
-            int[] CarData;
-            //int carsarriving = CarParkFunctions.CarsArriving();
-            //int carsleaving = CarParkFunctions.CarsLeaving();
-            //int cardiff=
-            CarData = CarParkFunctions.CarsSubtract(currentcarsinpark);
-            //CarData
-            //[0]=Current cars
-            //[1]= Difference in arriving and leaving
-            //[2]=arriving cars
-            //[3]=leaving cars
-            //[4]=Left because of no space
-            //[5]=DevPoints 
-            //[6]=ParkPoints
-            currentcarsinpark.Amountofcars = CarData[0];
-            currentcarsinpark.carpark_rating += CarData[6];
-            currentcarsinpark.develop_pressure += CarData[5];
+            //Randomize cars arriving and leaving
+            var carsarriving = CarParkFunctions.CarsArriving(carpark);
+            var carsleaving = CarParkFunctions.CarsLeaving(carpark);
 
-            //currentcarsinpark.Amountofcars = CarData[0];
-            //currentcarsinpark.develop_pressure += CarData[5];
-            //currentcarsinpark.carpark_rating = CarData[6];
-            //if(CarData[1]!=0)
-            //{
-            //    //Call the api to make the changes//
-            //    //CarData[1] is difference in cars
-            //    var data4 = await ApiClientFactory.Instance.ChangeCars(new WebApiModels.ChangeCars() { Fk_carpark = currentcarsinpark.Id, change_in_cars = CarData[1] });
+            //Initiate ques
+            if (carsarriving > 0)
+                arrivingque = new ArrayList(new int[carsarriving]);
+            if (carpark.Amountofcars > 0 && carsleaving > 0)
+                leavingque = new ArrayList(new int[carsleaving]);
 
-            //    currentcarsinpark.Amountofcars = CarData[0];
-            //}
-            //else
-            //{
-            //    // THe change in cars were zero so no update needed.
-            //}
+            CarsareArriving = arrivingque != null;
+            CarsareLeaving = leavingque != null;
 
+            //Iterate through both ques
 
-            ////Here we should subtract or add the number of cars from the carpark in db//
+            while (CarsareArriving || CarsareLeaving)
+            {
+                if (CarsareLeaving)
+                {
+                    leavingque.RemoveAt(0);
+                    carpark.Amountofcars -= carpark.Amountofcars;
+                    if (carpark.Amountofcars < 0)
+                        carpark.Amountofcars = 0;
+                    CarsareLeaving = leavingque.Count > 0;
+                }
 
-            ////currentcarsinpark.Amountofcars = CarAmount;
-            return CarData;
+                if (CarsareArriving)
+                {
+                    carpark = CarParkFunctions.AddCar(carpark);
+                    arrivingque.RemoveAt(0);
+                    CarsareArriving = arrivingque.Count > 0;
+                }
+            }
+
+            //Check if car park needs another floor
+
+            if ((carpark.develop_pressure + carpark.Floors) > 100)
+            {
+                carpark.Floors++;
+                carpark.develop_pressure = 0;
+                carpark.Parkingspace += 8;
+                carpark.carpark_rating += 5;
+            }
+
+                                                  
+            return carpark;
         }
-     
+
     }
 }
