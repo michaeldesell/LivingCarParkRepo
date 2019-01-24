@@ -80,6 +80,16 @@ namespace LivingCarPark.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Blue_car1 {
+            get {
+                object obj = ResourceManager.GetObject("Blue_car1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         internal static string Bluecar {
@@ -101,9 +111,29 @@ namespace LivingCarPark.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] gamebackground1 {
+            get {
+                object obj = ResourceManager.GetObject("gamebackground1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] Green_car {
             get {
                 object obj = ResourceManager.GetObject("Green_car", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Green_car1 {
+            get {
+                object obj = ResourceManager.GetObject("Green_car1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -130,6 +160,16 @@ namespace LivingCarPark.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] parkinggarage_entrence_empty1 {
+            get {
+                object obj = ResourceManager.GetObject("parkinggarage_entrence_empty1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] parkinggarage_entrence_full {
             get {
                 object obj = ResourceManager.GetObject("parkinggarage_entrence_full", resourceCulture);
@@ -140,9 +180,29 @@ namespace LivingCarPark.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] parkinggarage_entrence_full1 {
+            get {
+                object obj = ResourceManager.GetObject("parkinggarage_entrence_full1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] Red_car {
             get {
                 object obj = ResourceManager.GetObject("Red_car", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Red_car1 {
+            get {
+                object obj = ResourceManager.GetObject("Red_car1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -162,6 +222,16 @@ namespace LivingCarPark.Properties {
         internal static byte[] Yellow_Car {
             get {
                 object obj = ResourceManager.GetObject("Yellow_Car", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Yellow_Car1 {
+            get {
+                object obj = ResourceManager.GetObject("Yellow_Car1", resourceCulture);
                 return ((byte[])(obj));
             }
         }

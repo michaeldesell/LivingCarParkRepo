@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarParkApi", "CarParkApi\Ca
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreApiClient", "CoreApiClient\CoreApiClient.csproj", "{0EA18EF8-7CE9-4E39-B4F4-1E0AD337B1BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextHelper", "TextHelper\TextHelper.csproj", "{73A4D133-C385-4959-AC12-807418CA32E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextHelper", "TextHelper\TextHelper.csproj", "{73A4D133-C385-4959-AC12-807418CA32E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

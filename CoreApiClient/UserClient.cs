@@ -5,11 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApiModels.Model;
 using CarParkApi.Data.Entities;
+using CarParkApi.JwtModel;
 
 namespace CoreApiClient
 {
     public partial class ApiClient
     {
+
+        public Task<Message<applicationlogin>> Authenticate(applicationlogin model)
+        {
+            var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "User/Authenticate"));
+            return PostAsync<applicationlogin>(requestUrl, model);
+        }
 
         public async Task<List<CarParkUser>> GetUsers()
         {
@@ -59,5 +67,12 @@ namespace CoreApiClient
                 "User/ChangeCars"));
             return await PostAsync<ChangeCars>(requestUrl, model);
         }
+
+        //public async Task<Message<ChangeCars>> Authenticate(applicationlogin model)
+        //{
+        //    var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+        //        "User/Authenticate"));
+        //    return await PostAsync<ChangeCars>(requestUrl, model);
+        //}
     }
 }

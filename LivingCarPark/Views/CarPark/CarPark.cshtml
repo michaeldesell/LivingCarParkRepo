@@ -14,7 +14,7 @@
                     type:"GET",
                     success: function (data) {
 
-                        //alert(data);
+                        //(data);
                         //$("#display").text(data)
                         $("#l1").text(" cars in garage: "+data[0])
                         $("#l2").text(" difference: "+data[1])
@@ -30,10 +30,10 @@
 
 
                         //floors on parkinghouse
-                        var i;
-                        for (i = 0; i < 10; i++) {
+                        //var i;
+                        //for (i = 0; i < 10; i++) {
 
-                        }
+                        //}
 
                         ///Cars leaving
                         //var i;
@@ -50,10 +50,11 @@
                             
                         //}
                           ///Cars Arriving
-                        ////alert(data[2]);
+                        ////(data[2]);
                         //var i;
-                      
-                        DelayCreationCar(data[2])
+                        //DelayCreationGarageCar(data[3])
+                        DelayCreationGarageCar(data[3])
+                       DelayCreationCar(data[2], data[3])
                        
                     
                         //var i;
@@ -72,7 +73,7 @@
 
                 });
 
-            }, 10000
+            }, 20000
             );
 
             function makeNewPositionToGarage($container, steps) {
@@ -80,111 +81,206 @@
                 var gamearea = $("#GameArea").width()
                 var gameareaheight = $("#GameArea").height()
        
-                var nh = gameareaheight-10
-                var nw = gamearea/2
+                var nh = gameareaheight-45
+                var nw = gamearea/2+10
 
                 return [nh, nw];
 
             }
 
-            function animateDivToGarage(i, steps) {
-                //alert('run step ' +step);
+            function animateDivToGarage($target, steps,carstoleave) {
+                //('run step ' +step);
                 var j
-                for (j = 0; j < i; j++) {
-
+               
                     setTimeout(function () {
 
                         var newq = makeNewPositionToGarage($('#garagebotlevel'), steps);
-                        //alert($target.offset())
+                        //($target.offset())
                         var oldq = $target.offset();
                         var speed = calcSpeed([oldq.top, oldq.left], newq);
 
-                        //alert(newq[0]+" och "+newq[1]);
+                        //(newq[0]+" och "+newq[1]);
                         $target.animate({
                             top: newq[0],
                             left: newq[1]
-                        }, speed, doneanddestroy($target)
+                        }, speed, doneanddestroy($target, steps, carstoleave)
 
 
                         );
 
-                    },1000)
-                    } ;
+                    },(1000*steps))
+                 
                 
                
 
             };
 
-            function makeNewPositionToSpawnpoint($container, steps) {
+            function makeNewPositionToSpawnpoint1($container, steps) {
 
                 var gamearea = $("#GameArea").width()
                 var gameareaheight = $("#GameArea").height()
 
-                var nh = gameareaheight
+                var nh = gameareaheight-50
                 var nw = 0
 
                 return [nh, nw];
 
             }
 
+            function makeNewPositionToSpawnpoint2($container, steps) {
+
+                var gamearea = $("#GameArea").width()
+                var gameareaheight = $("#GameArea").height()
+
+                var nh = gameareaheight
+                var nw = gamearea
+
+                return [nh, nw];
+
+            }
+
             function animateDivToSpawnpoint($target, steps) {
-                //alert('run step ' +step);
-                var newq = makeNewPositionToSpawnpoint($('#GameArea'), steps);
-                //alert($target.offset())
+                //('run step ' +step);
+                var newq = makeNewPositionToSpawnpoint1($('#GameArea'), steps);
+                //($target.offset())
                 var oldq = $target.offset();
                 var speed = calcSpeed([oldq.top, oldq.left], newq);
 
-                //alert(newq[0]+" och "+newq[1]);
+                //(newq[0]+" och "+newq[1]);
                 $target.animate({
                     top: newq[0],
                     left: newq[1]
-                }, speed, doneanddestroyleaving($target)
+                }, speed, doneanddestroyleaving($target,steps)
 
 
                 );
 
             };
+            function animateDivToSpawnpoint2($target, steps) {
+                //('run step ' +step);
+                var newq = makeNewPositionToSpawnpoint2($('#GameArea'), steps);
+                //($target.offset())
+                var oldq = $target.offset();
+                var speed = calcSpeed([oldq.top, oldq.left], newq);
 
-            function doneanddestroy($target) {
+                //(newq[0]+" och "+newq[1]);
+                $target.animate({
+                    top: newq[0],
+                    left: newq[1]
+                }, speed, doneanddestroyleaving($target,steps)
+                  
 
+                );
+
+            };
+
+            function doneanddestroy($target, steps, carstoleave) {
+
+                var div = document.getElementById('point2car' + steps);
+                //var div = document.createElement('div');
+                //div.textContent = "C" + j;
+                //div.setAttribute('class', 'car' + j);
+            
                 setTimeout(function () {
                     
-                    $target.remove();
-                }, 10000);
+                //    //("dissapear" + steps);
+                    div.setAttribute('style', 'background-color:red;height:10px;position:absolute;width:10px;top:450px;left:999px;Display:none');
+                 
+                }, 10000 - (1000 * steps));
                 
-                //$target.remove();
+                ////$target.remove();
+              
             }
 
-            function doneanddestroyleaving($target) {
-
+            function doneanddestroyleaving($target, steps) {
+                
+                var div = document.getElementById('garagecar' + steps);
+                //var div = document.createElement('div');
+                //div.textContent = "C" + j;
+                //div.setAttribute('class', 'car' + j);
+               
                 setTimeout(function () {
-                
-                    $target.remove();
-                }, 10000);
+                    (div + " " + steps);
+                    ("dissapear" + steps);
+                    div.setAttribute('style', 'background-color:red;height:25px;position:absolute;width:25px;top:450px;left:500px;Display:none');
+
+                }, 10000 - (1000 * steps));
 
                 //$target.remove();
             }
 
-            function DelayCreationCar(i) {
+            function DelayCreationCar(i,k) {
 
 
-                //alert(" detta blir jobbigt");
+                //(" detta blir jobbigt");
                 var j
                 for (j = 0; j < i; j++) {
-                    var div = document.createElement('div');
+                    var div = document.getElementById('point2car'+j);
+                    //var div = document.createElement('div');
                     div.textContent = "C" + j;
                     div.setAttribute('class', 'car' + j);
-                    div.setAttribute('style', 'background-color:red;height:10px;position:absolute;width:10px;top:450px;left:999px');
+                    div.setAttribute('style', 'background-color:red;height:25px;position:absolute;width:25px;top:450px;left:999px');
+                    //$("#point2carimg" + j).setAttribute('src', '~/images/Red car.png')
+                    //var img = document.getElementById('point2carimg' + j);
+                    //img.setAttribute('src', '~/images/Red car.png');
+                    //div.setAttribute('style', 'Display:block');
+                    //$("#point2car" + j).css('background-image','~/images/Redcar.png')
                     $("#GameArea").append(div)
-                    animateDivToGarage(j, 1)
+                    animateDivToGarage($('#point2car'+j), j)
+                }
+
+                var h
+                for (h = 0; h < k; j++) {
+                    var div = document.getElementById('garagecar' + h);
+                    //var div = document.createElement('div');
+                    div.textContent = "C" + h;
+                    div.setAttribute('class', 'car' + h);
+                    div.setAttribute('style', 'background-color:red;height:25px;position:absolute;width:25px;top:450px;left:500px');
+                    //$("#point2carimg" + j).setAttribute('src', '~/images/Red car.png')
+                    //var img = document.getElementById('point2carimg' + j);
+                    //img.setAttribute('src', '~/images/Red car.png');
+                    //div.setAttribute('style', 'Display:block');
+                    //$("#point2car" + j).css('background-image','~/images/Redcar.png')
+                    $("#GameArea").append(div)
+                    animateDivToSpawnpoint($('#garagecar' + h), h)
+                    //animateDivToS($('#garagecar' + j), j)
                 }
                 //var div = document.createElement('div');
                 //div.textContent = "C"+i;
                 //div.setAttribute('class', 'car'+i);
                 //div.setAttribute('style', 'background-color:red;height:10px;position:absolute;width:10px;top:450px;left:999px');
                 //$("#GameArea").append(div)
+               
+                //animateDivToGarage(i, 1)
+            }
 
-                animateDivToGarage(i, 1)
+            function DelayCreationGarageCar(i) {
+
+
+                //(" detta blir jobbigt");
+                var j
+                for (j = 0; j < i; j++) {
+                    var div = document.getElementById('garagecar' + j);
+                    //var div = document.createElement('div');
+                    div.textContent = "C" + j;
+                    div.setAttribute('class', 'car' + j);
+                    div.setAttribute('style', 'background-color:red;height:25px;position:absolute;width:25px;top:450px;left:500px');
+                    //$("#point2carimg" + j).setAttribute('src', '~/images/Red car.png')
+                    //var img = document.getElementById('point2carimg' + j);
+                    //img.setAttribute('src', '~/images/Red car.png');
+                    //div.setAttribute('style', 'Display:block');
+                    //$("#point2car" + j).css('background-image','~/images/Redcar.png')
+                    $("#GameArea").append(div)
+                    animateDivToSpawnpoint($('#garagecar' + j), j)
+                    //animateDivToS($('#garagecar' + j), j)
+                }
+                //var div = document.createElement('div');
+                //div.textContent = "C"+i;
+                //div.setAttribute('class', 'car'+i);
+                //div.setAttribute('style', 'background-color:red;height:10px;position:absolute;width:10px;top:450px;left:999px');
+                //$("#GameArea").append(div)
+               
+                //animateDivToGarage(i, 1)
             }
 
             function calcSpeed(prev, next) {
@@ -237,13 +333,13 @@
         //    var nw = 0
 
         //    //steps = d.innerText;
-        //    //alert(d.innerText);
-        //    //alert(steps);
+        //    //(d.innerText);
+        //    //(steps);
         //    //d.innerText = step;
         //    //nh = Math.floor(Math.random() * h);
         //    //nw = Math.floor(Math.random() * w);
-        //    //alert(h)
-        //    //alert(w)
+        //    //(h)
+        //    //(w)
         //    if (steps == 0) {
         //        console.log(h);
         //        console.log(w);
@@ -296,7 +392,7 @@
         //}
 
         //function animateDiv($target, steps) {
-        //    //alert('run step ' +step);
+        //    //('run step ' +step);
         //    var newq = makeNewPosition($target.parent(), steps);
         //    var oldq = $target.offset();
         //    var speed = calcSpeed([oldq.top, oldq.left], newq);
@@ -320,11 +416,11 @@
         //        //    contenType: 'application/json; charset=utf-8',
         //        //    datatype:'html',
         //        //    success: function (data) {
-        //        //        alert(data+' succeded')
+        //        //        (data+' succeded')
         //        //    }
         //        //})
         //        $.post('Tour/IntroTour/', { steps: steps }, function (data) {
-        //            alert(data + ' succeded')
+        //            (data + ' succeded')
         //        });
         //        setTimeout(function () { animateDiv($target, steps) }, 10000);
 
@@ -372,30 +468,92 @@
     </dl>
 </div>
 <div>
-    <div id="GameArea" style="background-image: url('~/../Resources/gamebackground.png'); height: 500px;width:1000px; position:absolute;">
+    <div id="GameArea" style="background-size: cover; height: 500px;width:1000px; position:absolute;">
+        <img id="gamebackground" src="~/images/gamebackground.png" style="height:100%;width:100%" />
         <div id="spawnpoint1" style="left:1px; top:450px; height:1px; width:1px; background-color:orange;position:absolute;"></div>
-        <div id="garagebotlevel" style="height:50px; width:100px; background-color:dimgrey;top:450px;bottom:10px;left:449px; position:absolute;"</div>
-        <div id="spawnpoint2" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
-        <div id="point2car0" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
-        <div id="point2car1" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
-        <div id="point2car2" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
-        <div id="point2car3" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
-        <div id="point2car4" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
-        <div id="point2car5" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
-        <div id="point2car6" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
-        <div id="point2car7" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
-        <div id="point2car8" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
-        <div id="point2car9" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
-        <div id="point2car10" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;"></div>
+        <img src="~/images/parkinggarage entrence empty.png" id="garagebotlevel" style="height:50px; width:100px; background-color:dimgrey;top:422px;bottom:10px;left:449px; position:absolute;" />
+        <div id="spawnpoint2" style=" top:450px; left:999px;height:1px; width:1px; background-color:yellow;position:absolute;">
+
+        </div>
+        <img src="~/images/Red car.png" id="point2car0" style=" top:450px; left:999px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg0" src="~/images/Redcar.png" style="height:100%;width:100%;" />
+        </img>*@
+        <img src="~/images/Red car.png" id="point2car1" style=" top:450px; left:999px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg1" src="~/images/Red car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Red car.png" id="point2car2" style=" top:450px; left:999px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg2" src="~/images/Red car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Red car.png" id="point2car3" style=" top:450px; left:999px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg3" src="~/images/Red car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Red car.png" id="point2car4" style=" top:450px; left:999px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg4"  src="~/images/Red car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Red car.png" id="point2car5" style=" top:450px; left:999px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg5" src="~/images/Red car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Red car.png" id="point2car6" style=" top:450px; left:999px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg6" src="~/images/Red car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Red car.png" id="point2car7" style=" top:450px; left:999px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg7" src="~/images/Red car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Red car.png" id="point2car8" style=" top:450px; left:999px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg8" src="~/images/Red car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Red car.png" id="point2car9" style=" top:450px; left:999px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg9" src="~/images/Red car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Red car.png" id="point2car10" style=" top:450px; left:999px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg10" src="~/images/Red car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+
+
+        <img src="~/images/Yellow car.png" id="garagecar0" style=" top:450px; left:500px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg0" src="~/images/Redcar.png" style="height:100%;width:100%;" />
+        </img>*@
+        <img src="~/images/Yellow car.png" id="garagecar1" style=" top:450px; left:500px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg1" src="~/images/Yellow car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Yellow car.png" id="garagecar2" style=" top:450px; left:500px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg2" src="~/images/Yellow car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Yellow car.png" id="garagecar3" style=" top:450px; left:500px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg3" src="~/images/Yellow car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Yellow car.png" id="garagecar4" style=" top:450px; left:500px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg4"  src="~/images/Yellow car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Yellow car.png" id="garagecar5" style=" top:450px; left:500px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg5" src="~/images/Yellow car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Yellow car.png" id="garagecar6" style=" top:450px; left:500px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg6" src="~/images/Yellow car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Yellow car.png" id="garagecar7" style=" top:450px; left:500px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg7" src="~/images/Yellow car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Yellow car.png" id="garagecar8" style=" top:450px; left:500px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg8" src="~/images/Yellow car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Yellow car.png" id="garagecar9" style=" top:450px; left:500px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg9" src="~/images/Yellow car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
+        <img src="~/images/Yellow car.png" id="garagecar10" style=" top:450px; left:500px;height:25px; width:25px; background-color:yellow;position:absolute;">
+        @*<img id="point2carimg10" src="~/images/Yellow car.png" style="height:100%;width:100%;display:none" />
+        </div>*@
     </div>
-        @*<h4>GameArea with colour</h4>*@
-   @*<img src="~/Resources/gamebackground.jpg" />*@
-   
-    <div id="Gamestats" style="background-color:lightgray; height: 200px;width:1000px; border-color:black; border-style:dashed; top:510px;position:absolute">
+    @*<h4>GameArea with colour</h4>*@
+    @*<img src="~/images/Blue car.png" />*@
+
+    <div id="Gamestats" style="background-color:lightgray; height: 200px;width:1000px; border-color:black; border-style:dashed; top:730px;position:absolute">
         <label id="l3"></label>
         <label id="l4"></label>
-        
+
     </div>
     @*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>*@
+        <a asp-action="Index">Back to List</a>*@
+    @*<img src="gamebackground.png" alt="Sample Photo" />
+        <img src="Resources/gamebackground.png" alt="Sample Photo" />*@
 </div>

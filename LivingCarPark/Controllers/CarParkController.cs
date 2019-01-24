@@ -12,6 +12,7 @@ using TextHelper;
 using LivingCarPark.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using LivingCarPark.Factory;
+using LivingCarPark.Properties;
 
 namespace LivingCarPark.Controllers
 {
@@ -59,6 +60,12 @@ namespace LivingCarPark.Controllers
             GameArea ga = new GameArea();
             ga.carpark = data2.Result.Data;
             ga.user = data2.Result.Data.User;
+            ga.backgroundimage= Resources.gamebackground1;
+            ga.parkinggarage = Resources.parkinggarage_entrence_empty1;
+            ga.redcar = Resources.gamebackground1;
+            //var info= Resources.Red_car1;
+            //var redcar = Resources.Red_car1;
+            //var garage = Resources.parkinggarage_entrence_empty1;
             return View(ga);
         }
 
@@ -98,7 +105,7 @@ namespace LivingCarPark.Controllers
             int[] CarData= CarParkDataLogic.CarsArrivingAndLeaving(TestingRepo.TestingCarPark);
             if(CarData[1]!=0)
             {
-
+               
                 WebApiModels.ChangeCars carsupdate = new WebApiModels.ChangeCars()
                 {
                     Fk_carpark = TestingRepo.TestingCarPark.Id,
