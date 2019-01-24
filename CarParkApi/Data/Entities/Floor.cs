@@ -10,12 +10,13 @@ namespace CarParkApi.Data.Entities
     {
         public int Id { get; set; }
         public int Floornumber { get; set; }
+        public int spaces { get; set; }
         public ICollection<Parkingspace> Parkingspaces { get; set; }
 
         public Floor(int Floornumber, int spaces)
         {
             ICollection<Parkingspace> ps = new List<Parkingspace>();
-
+            this.spaces = spaces;
             this.Floornumber = Floornumber;
 
 

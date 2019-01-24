@@ -9,8 +9,7 @@ namespace CarParkApi.Data.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Parkingspace Parkingspace { get; set; }
-
+        
         public Car(string name)
         {
             Name = name;
