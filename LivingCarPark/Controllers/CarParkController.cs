@@ -29,6 +29,7 @@ namespace LivingCarPark.Controllers
             Utility.ApplicationSettings.WebApiUrl = appSettings.Value.WebApiBaseUrl;
             Utility.ApplicationSettings.username = appSettings.Value.username;
             Utility.ApplicationSettings.password = appSettings.Value.password;
+            Factory.ApiClientFactory.InstanceMemory = _memory;
         }
 
         //[authorize]

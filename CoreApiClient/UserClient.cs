@@ -16,7 +16,7 @@ namespace CoreApiClient
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
                 "User/Authenticate"));
-            return PostAsync<applicationlogin>(requestUrl, model);
+            return PostAuthenticationAsync<applicationlogin>(requestUrl, model);
         }
 
         public async Task<List<CarParkUser>> GetUsers()

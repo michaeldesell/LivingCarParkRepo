@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace LivingCarPark.Model
     {
 
         public static UserCarPark TestingCarPark { get; set; }
+        public static IMemoryCache cache { get; set; }
         public TestingRepo()
         {
             
@@ -31,7 +33,12 @@ namespace LivingCarPark.Model
                 // and just go ahed for testing
                 string test = "";
             }
+
+            //if (cache == null)
+            //{
                
+            //}
+
         }
 
 

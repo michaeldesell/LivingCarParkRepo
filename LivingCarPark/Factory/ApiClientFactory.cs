@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace LivingCarPark.Factory
 {
-    internal static class ApiClientFactory
+    internal class ApiClientFactory
     {
         private static Uri apiUri;
         private static string username;
         private static string password;
         private static IMemoryCache memory;
-        private static Lazy<ApiClient> restClient = new Lazy<ApiClient>(() => new ApiClient(apiUri,username,password,memory), LazyThreadSafetyMode.ExecutionAndPublication);
+        private static Lazy<ApiClient> restClient = new Lazy<ApiClient>(() => new ApiClient(apiUri,username,password, memory), LazyThreadSafetyMode.ExecutionAndPublication);
 
-        static ApiClientFactory()
+         static ApiClientFactory()
         {
             apiUri = new Uri(ApplicationSettings.WebApiUrl);
             username = ApplicationSettings.username;
@@ -31,6 +31,11 @@ namespace LivingCarPark.Factory
             {
                 return restClient.Value;
             }
+        }
+
+        public static IMemoryCache InstanceMemory
+        {
+            set => memory = value;
         }
 
     }
