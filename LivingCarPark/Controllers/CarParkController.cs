@@ -41,8 +41,10 @@ namespace LivingCarPark.Controllers
             //var data = ApiClientFactory.Instance.GetUserCarPark(new UserModel());
 
             Carpark usercp = new Carpark();
-            usercp.User = new CarParkUser() { Id = User.Claims.FirstOrDefault().Value };
-            var data2 = ApiClientFactory.Instance.GetUserCarPark(usercp);
+            CarParkModel cpm = new CarParkModel();
+            cpm.User = User.Claims.FirstOrDefault().Value;
+            //usercp.User = new CarParkUser() { Id = User.Claims.FirstOrDefault().Value };
+            var data2 = ApiClientFactory.Instance.GetUserCarPark(cpm);
             if (data2.Result.DataExist && data2.Result.IsSuccess)
             {
                 return RedirectToAction("CarPark", "CarPark");
@@ -60,7 +62,11 @@ namespace LivingCarPark.Controllers
 
             Carpark usercp = new Carpark();
             usercp.User = new CarParkUser() { Id = User.Claims.FirstOrDefault().Value };
-            var data2 = ApiClientFactory.Instance.GetUserCarPark(usercp);
+            CarParkModel cpm = new CarParkModel()
+            {
+                User=User.Claims.FirstOrDefault().Value
+            };
+            var data2 = ApiClientFactory.Instance.GetUserCarPark(cpm);
 
             GameArea ga = new GameArea();
             ga.carpark = data2.Result.Data;
@@ -86,7 +92,7 @@ namespace LivingCarPark.Controllers
 
             if (ModelState.IsValid)
             {
-                CarParkModel model = new CarParkModel() { User = User.Identity, Name = carpark.Name };
+                CarParkModel model = new CarParkModel() { User = User.Claims.FirstOrDefault().Value, Name = carpark.Name };
                 var data = await ApiClientFactory.Instance.SaveCarpark(carpark);
 
                     if (data.IsSuccess)

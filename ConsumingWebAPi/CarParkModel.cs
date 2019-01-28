@@ -17,7 +17,7 @@ namespace WebApiModels
         public string Name { get; set; }
 
         [DataMember(Name = "User")]
-        public IIdentity User { get; set; }
+        public string User { get; set; }
 
         [DataMember(Name = "Floors")]
         public FloorModel Floors { get; set; }

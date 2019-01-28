@@ -8,8 +8,9 @@ using CarParkApi.Data.Entities;
 using LivingCarPark.Factory;
 using Microsoft.AspNetCore.Authorization;
 using WebApiModels;
-
-
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 
 namespace LivingCarPark.Controllers
 {
@@ -18,9 +19,22 @@ namespace LivingCarPark.Controllers
     {
         public  LivingCarParkContext _ctx { get; set; }
 
-        public MyCarParkController(LivingCarParkContext ctx)
+        private readonly IOptions<MySettingsModel> appSettings;
+        private IConfiguration _config;
+        private IMemoryCache _memory;
+
+        public MyCarParkController(LivingCarParkContext ctx, IOptions<MySettingsModel> app, IConfiguration config, IMemoryCache memory)
         {
             _ctx = ctx;
+            appSettings = app;
+            _config = config;
+            _memory = memory;
+
+            Utility.ApplicationSettings.WebApiUrl = app.Value.WebApiBaseUrl;
+            Utility.ApplicationSettings.WebApiUrl = config["MySettings:WebApiBaseUrl"];
+            Utility.ApplicationSettings.username = config["MySettings:username"];
+            Utility.ApplicationSettings.password = config["MySettings:password"];
+            Factory.ApiClientFactory.InstanceMemory = _memory;
         }
         
         public IActionResult MyCarPark()
