@@ -72,23 +72,40 @@ namespace CarParkApi.Controllers
         [Route("GetAllUsers")]
         public IActionResult GetAllUsers()
         {
-            var users = _context.Users
-                .Select(u => new
+            List<WebApiModels.CarParkUser> users = _context.Users
+                .Select(u => new WebApiModels.CarParkUser()
                 {
-                    u.FirstName,
-                    u.LastName,
-                    u.Email
+                    UserId = u.Id,
+                    UserName = u.UserName,
+                    FirstName=u.FirstName,
+                    LastName=u.LastName,
+                    
                 }
+                
                 )
                               .ToList();
+            //users.ForEach
+            foreach(WebApiModels.CarParkUser cpu in users)
+            {
+                List<string> Rolesid = _context.UserRoles.Where(x => x.UserId == cpu.UserId).Select(y => y.RoleId).ToList();
 
-            List<CarParkUser> usertest = _context.Users.ToList();
+                cpu.Role = _context.Roles.Where(x => Rolesid.Contains(x.Id) == true).Select(y => y.Name).ToList();
+                if (cpu.Role.Contains("WebAdmin"))
+                    cpu.Admin = true;
+                else
+                    cpu.Admin = false;
+            }
+               
+
+            //List<CarParkUser> usertest= _context.Users.ToList();
 
             return Ok(users);
 
         }
 
         [HttpPost]
+        [Route("LoginUser")]
+        public IActionResult LoginUser(string login)
         [Route("GetUserCarPark")]
         public IActionResult GetUserCarPark(Carpark login)
         {
@@ -122,8 +139,79 @@ namespace CarParkApi.Controllers
 
 
         [HttpPost]
-        [Route("GetUserCarParks")]
-        public IActionResult GetUserCarParks(CarParkModel carpark)
+        [Route("KickAdmin")]
+        public IActionResult KickAdmin(ChangeAdminPriviligies login)
+        {
+            ////return new string[] { "value1", "value2" };
+            //UserModel Data = new UserModel()
+            //{
+            //    Id = 1,
+            //    Carpark = 1,
+            //    Password = "banan",
+            //    Username = "bananarne"
+
+
+            //};
+            ChangeAdminPriviligies  usm= login;
+            var role = _context.UserRoles.FirstOrDefault(x => x.UserId == usm.UserID && x.RoleId=="1");
+            if (role != null)
+            {
+                _context.Remove(role);
+                _context.SaveChanges();
+            }
+               
+            
+            var msg = new Message<ChangeAdminPriviligies>();
+            msg.IsSuccess = true;
+            msg.Data = usm;
+            msg.ReturnMessage = "your Admin priviliges has been removed";
+            //var data = list;
+            return Ok(msg);
+        }
+
+        [HttpPost]
+        [Route("MakeAdmin")]
+        public IActionResult MakeAdmin(ChangeAdminPriviligies login)
+        {
+            //return new string[] { "value1", "value2" };
+            //UserModel Data = new UserModel()
+            //{
+            //    Id = 1,
+            //    Carpark = 1,
+            //    Password = "banan",
+            //    Username = "bananarne"
+
+
+            //};
+
+            ChangeAdminPriviligies usm = login;
+            var role = _context.UserRoles.FirstOrDefault(x => x.UserId == usm.UserID && x.RoleId == "1");
+            //var role = _context..FirstOrDefault(x => x.UserId == usm.Id.ToString() && x.RoleId == "1");
+
+            var msg = new Message<ChangeAdminPriviligies>();
+         
+            if (role != null)
+            {
+                
+                msg.IsSuccess = true;
+                msg.Data = usm;
+                msg.ReturnMessage = "you already have admin priviliges";
+            }
+            else
+            {
+                _context.UserRoles.Add(new Microsoft.AspNetCore.Identity.IdentityUserRole<string>() { UserId=usm.UserID,RoleId="1"});
+                _context.SaveChanges();
+                msg.ReturnMessage = "your admin priviligies has been added";
+            }
+           
+          
+            //var data = list;
+            return Ok(msg);
+        }
+
+        [HttpPost]
+        [Route("GetUserCarPark")]
+        public IActionResult GetUserCarPark(Carpark login)
         {
             List<CarParkModel> carparks = _context.Carparks
                 .Where(x => x.User.Id.Equals(carpark.User))

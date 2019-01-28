@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using WebApiModels;
 using CarParkApi.Data.Entities;
 using CarParkApi.JwtModel;
+using CarParkUser = WebApiModels.CarParkUser;
 
 namespace CoreApiClient
 {
@@ -26,7 +27,21 @@ namespace CoreApiClient
             return await GetAsync<List<CarParkUser>>(requestUrl);
         }
 
-        public async Task<Message<CarParkModel>> SaveCarpark(CarParkModel model)
+        public Task<Message<ChangeAdminPriviligies>> KickAdmin(ChangeAdminPriviligies user)
+        {
+            var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "User/KickAdmin"));
+            return PostAsync<ChangeAdminPriviligies> (requestUrl, user);
+        }
+
+        public Task<Message<ChangeAdminPriviligies>> MakeAdmin(ChangeAdminPriviligies user)
+        {
+            var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "User/MakeAdmin"));
+            return PostAsync<ChangeAdminPriviligies>(requestUrl, user);
+        }
+
+      public async Task<Message<CarParkModel>> SaveCarpark(CarParkModel model)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
                 "User/SaveCarPark"));

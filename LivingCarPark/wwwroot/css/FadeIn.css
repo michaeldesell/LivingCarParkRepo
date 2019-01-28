@@ -1,0 +1,56 @@
+﻿
+
+.hiddenel {
+  display:none;
+  
+}
+
+#wrapper {
+  
+}
+.centering {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-box-shadow: 5px 5px 8px 2px rgba(0,0,0,0.4), 1px 1px 1px 0 rgba(0,0,0,0.3);
+    box-shadow: 5px 5px 8px 2px rgba(0,0,0,0.4), 1px 1px 1px 0 rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    /*display:none;*/
+}
+
+#header{
+    width:80%;
+    margin-left:10%;
+    margin-right:10%;
+    text-align:center;
+}
+#carparklogo {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+#presentationtext {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align:center;
+}
+#greenparagraph
+{
+    position:relative;
+    color:forestgreen;
+    font-style:italic;
+}
+#Fadebutton {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    display: block;
+}
+#hidebutton {
+
+}
+
+
