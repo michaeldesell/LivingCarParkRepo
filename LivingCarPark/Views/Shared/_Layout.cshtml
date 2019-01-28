@@ -19,9 +19,11 @@
         <div class="banan">
             @if (User.Identity.IsAuthenticated)
             {
+                
                 <a asp-controller="App" asp-action="Index">Index</a>
 
                 <a asp-controller="CarPark" asp-action="CarPark">Go to @UserManager.GetUserAsync(User).Result.FirstName CarPark</a>
+                <a asp-controller="App" asp-action="ShowReport">Reports CarPark</a>
                 <a asp-controller="Account" asp-action="Logout">Logout</a>
             }
             else if (!User.Identity.IsAuthenticated)

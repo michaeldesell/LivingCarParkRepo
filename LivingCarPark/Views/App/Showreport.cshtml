@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<LivingCarPark.ViewModels.ViewUserReport>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "ShowReport";
 }
 
-<h2>Index</h2>
+<h2>ShowReport</h2>
 
-<p>
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
+</p>*@
 <table class="table">
     <thead>
         <tr>
@@ -17,6 +17,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Firstname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShowButton)
             </th>
             <th></th>
         </tr>
@@ -30,7 +33,35 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Firstname)
             </td>
-           
+            <td>
+
+                @if (item.ShowButton == true)
+                {
+
+                    <form asp-action="KickAdmin">
+
+                        <div class="form-group">
+                            @Html.Hidden("UserId",item.UserId);
+                            <input type="submit" value="Kick WebAdmin" class="btn btn-danger" />
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="MakeAdmin">
+
+                        <div class="form-group">
+                            @Html.Hidden("UserId", item.UserId);
+                            <input type="submit" value="Make WebAdmin" class="btn btn-success" />
+                        </div>
+                    </form>
+                }
+            </td>
+            @*<td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>*@
         </tr>
 }
     </tbody>
