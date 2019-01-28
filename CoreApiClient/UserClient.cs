@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using WebApiModels;
 using CarParkApi.Data.Entities;
 using CarParkApi.JwtModel;
-using CarParkUser = WebApiModels.CarParkUser;
+using CarParkUser = WebApiModels.CarParkUserModel;
 
 namespace CoreApiClient
 {

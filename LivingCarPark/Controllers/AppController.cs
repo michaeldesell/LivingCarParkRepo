@@ -11,8 +11,6 @@ using Microsoft.Extensions.Configuration;
 using CarParkApi.Data.Entities;
 using LivingCarPark.ViewModels;
 using Microsoft.Extensions.Caching.Memory;
-using WebApiModels.Model;
-using WebApiModels;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -55,7 +53,7 @@ namespace LivingCarPark.Controllers
 
             Factory.ApiClientFactory acf = new Factory.ApiClientFactory();
             var data = Factory.ApiClientFactory.Instance.GetUsers();
-            List<ViewUserReport> users = data.Result.Select(x => new ViewUserReport() { UserId=x.UserId,Username = x.UserName, Firstname = x.FirstName,Roles=x.Role,ShowButton=x.Admin }).ToList();
+            List<ViewUserReport> users = data.Result.Select(x => new ViewUserReport() { UserId=x.Id,Username = x.Username,Roles=x.Role,ShowButton=x.Admin }).ToList();
 
             return View(users);
         }

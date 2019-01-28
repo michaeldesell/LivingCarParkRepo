@@ -72,22 +72,19 @@ namespace CarParkApi.Controllers
         [Route("GetAllUsers")]
         public IActionResult GetAllUsers()
         {
-            List<WebApiModels.CarParkUser> users = _context.Users
-                .Select(u => new WebApiModels.CarParkUser()
+            List<CarParkUserModel> users = _context.Users
+                .Select(u => new CarParkUserModel()
                 {
-                    UserId = u.Id,
-                    UserName = u.UserName,
-                    FirstName=u.FirstName,
-                    LastName=u.LastName,
-                    
+                    Id = u.Id,
+                    Username = u.UserName,
                 }
-                
+
                 )
                               .ToList();
             //users.ForEach
-            foreach(WebApiModels.CarParkUser cpu in users)
+            foreach (CarParkUserModel cpu in users)
             {
-                List<string> Rolesid = _context.UserRoles.Where(x => x.UserId == cpu.UserId).Select(y => y.RoleId).ToList();
+                List<string> Rolesid = _context.UserRoles.Where(x => x.UserId == cpu.Id).Select(y => y.RoleId).ToList();
 
                 cpu.Role = _context.Roles.Where(x => Rolesid.Contains(x.Id) == true).Select(y => y.Name).ToList();
                 if (cpu.Role.Contains("WebAdmin"))
@@ -95,7 +92,7 @@ namespace CarParkApi.Controllers
                 else
                     cpu.Admin = false;
             }
-               
+
 
             //List<CarParkUser> usertest= _context.Users.ToList();
 
@@ -103,39 +100,6 @@ namespace CarParkApi.Controllers
 
         }
 
-        [HttpPost]
-        [Route("LoginUser")]
-        public IActionResult LoginUser(string login)
-        [Route("GetUserCarPark")]
-        public IActionResult GetUserCarPark(Carpark login)
-        {
-
-            Carpark userpark = _context.Carparks.FirstOrDefault(x => x.User.Id.Equals(login.User.Id));
-
-            var msg = new Message<Carpark>();
-            if (userpark != null)
-            {
-
-                CarParkUser user = _context.Users.FirstOrDefault(x => x.Id == login.User.Id);
-
-                userpark.User = user;
-
-                msg.IsSuccess = true;
-                msg.DataExist = true;
-                msg.Data = userpark;
-                msg.ReturnMessage = "your CarPark has been retrieved succesfully";
-            }
-            else
-            {
-                msg.IsSuccess = true;
-                msg.DataExist = false;
-                msg.ReturnMessage = "You must create a carpark";
-            }
-
-
-            //var data = list;
-            return Ok(msg);
-        }
 
 
         [HttpPost]
@@ -152,15 +116,15 @@ namespace CarParkApi.Controllers
 
 
             //};
-            ChangeAdminPriviligies  usm= login;
-            var role = _context.UserRoles.FirstOrDefault(x => x.UserId == usm.UserID && x.RoleId=="1");
+            ChangeAdminPriviligies usm = login;
+            var role = _context.UserRoles.FirstOrDefault(x => x.UserId == usm.UserID && x.RoleId == "1");
             if (role != null)
             {
                 _context.Remove(role);
                 _context.SaveChanges();
             }
-               
-            
+
+
             var msg = new Message<ChangeAdminPriviligies>();
             msg.IsSuccess = true;
             msg.Data = usm;
@@ -189,29 +153,29 @@ namespace CarParkApi.Controllers
             //var role = _context..FirstOrDefault(x => x.UserId == usm.Id.ToString() && x.RoleId == "1");
 
             var msg = new Message<ChangeAdminPriviligies>();
-         
+
             if (role != null)
             {
-                
+
                 msg.IsSuccess = true;
                 msg.Data = usm;
                 msg.ReturnMessage = "you already have admin priviliges";
             }
             else
             {
-                _context.UserRoles.Add(new Microsoft.AspNetCore.Identity.IdentityUserRole<string>() { UserId=usm.UserID,RoleId="1"});
+                _context.UserRoles.Add(new Microsoft.AspNetCore.Identity.IdentityUserRole<string>() { UserId = usm.UserID, RoleId = "1" });
                 _context.SaveChanges();
                 msg.ReturnMessage = "your admin priviligies has been added";
             }
-           
-          
+
+
             //var data = list;
             return Ok(msg);
         }
 
         [HttpPost]
         [Route("GetUserCarPark")]
-        public IActionResult GetUserCarPark(Carpark login)
+        public IActionResult GetUserCarPark(CarParkModel carpark)
         {
             List<CarParkModel> carparks = _context.Carparks
                 .Where(x => x.User.Id.Equals(carpark.User))
@@ -252,8 +216,8 @@ namespace CarParkApi.Controllers
         public IActionResult SaveCarPark(CarParkModel carpark)
         {
             CarParkUser User = _context.Users.FirstOrDefault(x => x.Id.Equals(carpark.User));
-          
-           
+
+
             Carpark newcarpark = new Carpark(carpark.Name, User);
             CarParkModel model = new CarParkModel() { Id = newcarpark.Id };
             var msg = new Message<CarParkModel>();
@@ -336,49 +300,6 @@ namespace CarParkApi.Controllers
         }
 
 
-        //[HttpPost]
-        //[Route("SaveCars")]
-        //public IActionResult SaveCars(UserModel login)
-        //{
-        //    //return new string[] { "value1", "value2" };
-        //    UserModel Data = new UserModel()
-        //    {
-        //        Id = 1,
-        //        Carpark = 1,
-        //        Password = "banan",
-        //        Username = "bananarne"
-
-
-        //    };
-        //    var msg = new Message<UserModel>();
-        //    msg.IsSuccess = true;
-        //    msg.Data = Data;
-        //    msg.ReturnMessage = "your user has been logged in succesful";
-        //    //var data = list;
-        //    return Ok(msg);
-        //}
-
-        //[HttpPost]
-        //[Route("DeleteCars")]
-        //public IActionResult DeleteCars(UserModel login)
-        //{
-        //    //return new string[] { "value1", "value2" };
-        //    UserModel Data = new UserModel()
-        //    {
-        //        Id = 1,
-        //        Carpark = 1,
-        //        Password = "banan",
-        //        Username = "bananarne"
-
-
-        //    };
-        //    var msg = new Message<UserModel>();
-        //    msg.IsSuccess = true;
-        //    msg.Data = Data;
-        //    msg.ReturnMessage = "your user has been logged in succesful";
-        //    //var data = list;
-        //    return Ok(msg);
-        //}
 
     }
 }

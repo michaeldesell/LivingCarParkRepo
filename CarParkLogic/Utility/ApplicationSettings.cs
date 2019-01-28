@@ -8,7 +8,7 @@ namespace CarParkLogic.Utility
     public class ApplicationSettings
     {
         public static string WebApiUrl { get; set; }
-        public static string username  { get; set; }
-    public static string password  { get; set; }
+        public static string username { get; set; }
+        public static string password { get; set; }
     }
 }
