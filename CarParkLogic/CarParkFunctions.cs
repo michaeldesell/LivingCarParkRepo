@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WebApiModels.Model;
+using WebApiModels;
 using CarParkApi.Data.Entities;
 
 namespace CarParkLogic

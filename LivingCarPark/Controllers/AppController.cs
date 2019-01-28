@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using CarParkLogic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
-using CarParkApi.Model;
+using WebApiModels;
 using Microsoft.Extensions.Configuration;
 using CarParkApi.Data.Entities;
 using LivingCarPark.ViewModels;

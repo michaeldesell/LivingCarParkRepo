@@ -17,6 +17,7 @@ namespace CarParkApi.Data
         }
         public DbSet<CarParkUser> Users { get; set; }
         public DbSet<Carpark> Carparks { get; set; }
+        public DbSet<Floor> Floors { get; set; }
         public DbSet<ApplicationLogin> ApplicationLogins {get;set;}
 
     }

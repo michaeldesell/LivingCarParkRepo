@@ -14,13 +14,13 @@
     </style>
 </head>
 <body>
-    <div class="w-100 p-3">
+    @*<div class="w-100 p-3">
         <div class="banan">
             <a asp-controller="Account" asp-action="Login">Welcome @UserManager.GetUserAsync(User).Result.FirstName</a>
             <a asp-controller="CarPark" asp-action="GetCarPark">My CarPark</a>
             <a asp-controller="Account" asp-action="Logout">Logout</a>
         </div>
-    </div>
+    </div>*@
 
     <header class="container">
         <h3 class="text-center">@ViewBag.Title</h3>

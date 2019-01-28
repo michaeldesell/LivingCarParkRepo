@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using CarParkApi.Model;
+//using CarParkApi.Model;
+using WebApiModels;
 using CarParkApi.Data;
 using CarParkApi.Data.Entities;
 using CarParkApi.JwtModel;
@@ -20,10 +21,10 @@ namespace CarParkApi.Controllers
     public class UserController : ControllerBase
     {
 
-        private readonly IOptions<Model.MySettingsModel> appSettings;
+        private readonly IOptions<MySettingsModel> appSettings;
         private LivingCarParkContext _context;
         private iapplicationservice _applicationservice;
-        public UserController(IOptions<Model.MySettingsModel> app, LivingCarParkContext context,iapplicationservice applicationservice)
+        public UserController(IOptions<MySettingsModel> app, LivingCarParkContext context, iapplicationservice applicationservice)
         {
             appSettings = app;
             _context = context;
@@ -81,46 +82,23 @@ namespace CarParkApi.Controllers
                 )
                               .ToList();
 
-            List<CarParkUser> usertest= _context.Users.ToList();
+            List<CarParkUser> usertest = _context.Users.ToList();
 
             return Ok(users);
 
         }
 
         [HttpPost]
-        [Route("LoginUser")]
-        public IActionResult LoginUser(UserModel login)
-        {
-            //return new string[] { "value1", "value2" };
-            UserModel Data = new UserModel()
-            {
-                Id = 1,
-                Carpark = 1,
-                Password = "banan",
-                Username = "bananarne"
-
-
-            };
-            var msg = new Message<UserModel>();
-            msg.IsSuccess = true;
-            msg.Data = Data;
-            msg.ReturnMessage = "your user has been logged in succesful";
-            //var data = list;
-            return Ok(msg);
-        }
-
-        [HttpPost]
         [Route("GetUserCarPark")]
         public IActionResult GetUserCarPark(Carpark login)
         {
-    
-            Carpark userpark = _context.Carparks.FirstOrDefault(x => x.User.Id == login.User.Id);
-           
+
+            Carpark userpark = _context.Carparks.FirstOrDefault(x => x.User.Id.Equals(login.User.Id));
 
             var msg = new Message<Carpark>();
-            if (userpark!=null)
+            if (userpark != null)
             {
-            
+
                 CarParkUser user = _context.Users.FirstOrDefault(x => x.Id == login.User.Id);
 
                 userpark.User = user;
@@ -134,47 +112,79 @@ namespace CarParkApi.Controllers
             {
                 msg.IsSuccess = true;
                 msg.DataExist = false;
-                msg.Data = new Carpark();
                 msg.ReturnMessage = "You must create a carpark";
             }
-          
-         
+
+
             //var data = list;
             return Ok(msg);
         }
 
+
         [HttpPost]
-        [Route("SaveCarPark")]
-        public IActionResult SaveCarPark(Tuple<Carpark,string> login)
+        [Route("GetUserCarParks")]
+        public IActionResult GetUserCarParks(CarParkModel carpark)
         {
+            List<CarParkModel> carparks = _context.Carparks
+                .Where(x => x.User.Id.Equals(carpark.User))
+                .Select(x => new CarParkModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Amountparkedcars = x.Amountparkedcars,
+                    SpacesperFloor = x.SpacesperFloor,
+                    carpark_rating = x.carpark_rating,
+                    develop_pressure = x.develop_pressure
 
-            Tuple<Carpark, string> retur = new Tuple<Carpark, string>(new Carpark(),login.Item2);
+                }).ToList();
 
-
-            //Carpark userpark = _context.Carparks.FirstOrDefault(x => x.User.Id == login.User.Id);
-            var msg = new Message<Tuple<Carpark,string>>();
-            CarParkUser User = _context.Users.FirstOrDefault(x => x.Id == login.Item2);
-            if (User != null)
+            var msg = new Message<CarParkModel>();
+            if (carpark != null)
             {
-                Carpark newcarpark = login.Item1;
-                newcarpark.User = User;
-                //newcarpark.Floors = 1;
 
-
-                _context.Add(newcarpark);
-                _context.SaveChanges();
-
-                retur =new Tuple<Carpark, string>(newcarpark,login.Item2);
                 msg.IsSuccess = true;
                 msg.DataExist = true;
-                msg.Data = retur;
+                msg.Data = carpark;
                 msg.ReturnMessage = "your CarPark has been retrieved succesfully";
             }
             else
             {
                 msg.IsSuccess = true;
                 msg.DataExist = false;
-                msg.Data = retur;
+                msg.ReturnMessage = "You must create a carpark";
+            }
+
+
+            //var data = list;
+            return Ok(msg);
+        }
+
+        [HttpPost]
+        [Route("SaveCarPark")]
+        public IActionResult SaveCarPark(CarParkModel carpark)
+        {
+            CarParkUser User = _context.Users.FirstOrDefault(x => x.Id.Equals(carpark.User));
+          
+           
+            Carpark newcarpark = new Carpark(carpark.Name, User);
+            CarParkModel model = new CarParkModel() { Id = newcarpark.Id };
+            var msg = new Message<CarParkModel>();
+
+            if (User != null)
+            {
+                _context.Add(newcarpark);
+                _context.SaveChanges();
+
+                msg.IsSuccess = true;
+                msg.DataExist = true;
+                msg.Data = model;
+                msg.ReturnMessage = "your CarPark has been retrieved succesfully";
+            }
+            else
+            {
+                msg.IsSuccess = true;
+                msg.DataExist = false;
+                msg.Data = model;
                 msg.ReturnMessage = "Your user was not present";
             }
 
@@ -208,6 +218,36 @@ namespace CarParkApi.Controllers
             //var data = list;
             return Ok(msg);
         }
+
+        [HttpPost]
+        [Route("GetCarParkFloors")]
+        public IActionResult GetCarParkFloors(Carpark carpark)
+        {
+
+            var floors = carpark.Floors;
+
+
+
+            var msg = new Message<ICollection<Floor>>();
+            if (floors != null)
+            {
+
+                msg.IsSuccess = true;
+                msg.DataExist = true;
+                msg.Data = floors;
+                msg.ReturnMessage = "your CarPark has been retrieved succesfully";
+            }
+            else
+            {
+                msg.IsSuccess = false;
+                msg.ReturnMessage = "No floors found";
+            }
+
+
+            return Ok(msg);
+        }
+
+
         //[HttpPost]
         //[Route("SaveCars")]
         //public IActionResult SaveCars(UserModel login)

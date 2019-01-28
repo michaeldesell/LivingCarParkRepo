@@ -1,7 +1,7 @@
 ﻿using System;
 using CarParkLogic.Factory;
 using System.Threading.Tasks;
-using WebApiModels.Model;
+using WebApiModels;
 using System.Collections;
 using CarParkApi.Data.Entities;
 using System.Collections.Generic;

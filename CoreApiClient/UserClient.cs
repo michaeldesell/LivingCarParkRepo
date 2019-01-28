@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using WebApiModels.Model;
+using WebApiModels;
 using CarParkApi.Data.Entities;
 using CarParkApi.JwtModel;
 
@@ -26,18 +26,18 @@ namespace CoreApiClient
             return await GetAsync<List<CarParkUser>>(requestUrl);
         }
 
-        public async Task<Message<Tuple<Carpark, string>>> SaveCarpark(Tuple<Carpark, string> model)
+        public async Task<Message<CarParkModel>> SaveCarpark(CarParkModel model)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
                 "User/SaveCarPark"));
-            return await PostAsync<Tuple<Carpark,string>>(requestUrl,model);
+            return await PostAsync<CarParkModel>(requestUrl,model);
         }
 
-        public async Task<Message<UserModel>> LoginUser(UserModel model)
+        public async Task<Message<CarParkUserModel>> LoginUser(CarParkUserModel model)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
                 "User/LoginUser"));
-            return await PostAsync<UserModel>(requestUrl, model);
+            return await PostAsync<CarParkUserModel>(requestUrl, model);
         }
 
         public async Task<Message<Carpark>> GetUserCarPark(Carpark id)
@@ -47,18 +47,26 @@ namespace CoreApiClient
             return await PostAsync<Carpark>(requestUrl, id);
         }
 
-        public async Task<Message<UserCarPark>> SaveCars(UserCarPark model)
+        public async Task<Message<GetUserCarParks>> GetUserCarParks(GetUserCarParks id)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
-                "User/GetUserCarPark"));
-            return await PostAsync<UserCarPark>(requestUrl, model);
+                "User/GetUserCarParks"));
+            return await PostAsync<GetUserCarParks>(requestUrl,id);
         }
 
-        public async Task<Message<UserCarPark>> DeleteCars(UserCarPark model)
+
+        public async Task<Message<CarParkModel>> SaveCars(CarParkModel model)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
                 "User/GetUserCarPark"));
-            return await PostAsync<UserCarPark>(requestUrl, model);
+            return await PostAsync<CarParkModel>(requestUrl, model);
+        }
+
+        public async Task<Message<CarParkModel>> DeleteCars(CarParkModel model)
+        {
+            var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "User/GetUserCarPark"));
+            return await PostAsync<CarParkModel>(requestUrl, model);
         }
 
         public async Task<Message<ChangeCars>> ChangeCars(ChangeCars model)

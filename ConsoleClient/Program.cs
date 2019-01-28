@@ -2,7 +2,7 @@
 using CarParkLogic;
 using System.Diagnostics;
 using System.Timers;
-using WebApiModels.Model;
+using WebApiModels;
 using System.Threading;
 using CarParkApi.Data.Entities;
 

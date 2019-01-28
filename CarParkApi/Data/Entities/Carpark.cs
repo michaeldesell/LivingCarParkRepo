@@ -7,8 +7,6 @@ namespace CarParkApi.Data.Entities
 {
     public class Carpark
     {
-
-
         public int Id { get; set; }
         public CarParkUser User { get; set; }
         public string Name { get; set; }
@@ -22,6 +20,12 @@ namespace CarParkApi.Data.Entities
 
         public Carpark()
         {
+
+        }
+        public Carpark(string name,CarParkUser user)
+        {
+            User = user;
+            Name = name;
             SpacesperFloor = 4;
             ICollection<Floor> floors = new List<Floor>();
             Amountparkedcars = 0;

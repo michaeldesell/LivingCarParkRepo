@@ -16,6 +16,7 @@ using CarParkApi.Data;
 using CarParkApi.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using LivingCarPark.Model;
+using WebApiModels;
 
 
 namespace LivingCarPark
@@ -78,7 +79,7 @@ namespace LivingCarPark
             {
                 cfg.MapRoute("Default",
                     "/{controller}/{action}/{id?}",
-                    new { controller = "App", Action = "Index" });
+                    new { controller = "MyCarPark", Action = "MyCarPark" });
             });
            
             
