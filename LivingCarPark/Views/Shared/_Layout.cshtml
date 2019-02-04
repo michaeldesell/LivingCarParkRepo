@@ -15,26 +15,28 @@
 
 </head>
 <body>
-    @*<div class="w-100 p-3">
+    <div class="w-100 p-3">
         <div class="banan">
             @if (User.Identity.IsAuthenticated)
             {
-                
-                <a asp-controller="App" asp-action="Index">Index</a>
+
+                <a asp-controller="App" asp-action="Frontpage">Index</a>
 
                 <a asp-controller="CarPark" asp-action="CarPark">Go to @UserManager.GetUserAsync(User).Result.FirstName CarPark</a>
                 <a asp-controller="App" asp-action="ShowReport">Reports CarPark</a>
+                <a asp-controller="App" asp-action="About">About</a>
                 <a asp-controller="Account" asp-action="Logout">Logout</a>
             }
             else if (!User.Identity.IsAuthenticated)
             {
-                <a asp-controller="App" asp-action="Index">Index</a>
+                <a asp-controller="App" asp-action="Frontpage">Index</a>
                 <a asp-controller="Account" asp-action="Login">Login</a>
+                <a asp-controller="App" asp-action="About">About</a>
             }
 
 
         </div>
-    </div>*@
+    </div>
 
     <header class="container">
         <h3 class="text-center">@ViewBag.Title</h3>

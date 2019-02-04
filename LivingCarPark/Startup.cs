@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authentication;
 using CarParkApi.Data;
 using CarParkApi.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
-using LivingCarPark.Model;
+
 using WebApiModels;
 
 
@@ -51,6 +51,7 @@ namespace LivingCarPark
                 cfg.User.RequireUniqueEmail = true;
             })
                 .AddEntityFrameworkStores<LivingCarParkContext>()
+                //.AddSignInManager(CarParkSignInManager)
                 .AddDefaultTokenProviders();
 
             services.AddCors();
@@ -79,7 +80,7 @@ namespace LivingCarPark
             {
                 cfg.MapRoute("Default",
                     "/{controller}/{action}/{id?}",
-                    new { controller = "MyCarPark", Action = "MyCarPark" });
+                    new { controller = "App", Action = "index" });
             });
            
             

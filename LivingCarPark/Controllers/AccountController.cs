@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using LivingCarPark.Model;
 
 namespace LivingCarPark.Controllers
 {
@@ -17,6 +18,7 @@ namespace LivingCarPark.Controllers
         private ILogger<AccountController> _logger;
         private SignInManager<CarParkUser> _signInManager;
         private UserManager<CarParkUser> _userManager;
+        private CarParkSignInManager _carParkManager;
         private IMemoryCache _memory;
 
         public AccountController(ILogger<AccountController> logger, SignInManager<CarParkUser> signInManager, UserManager<CarParkUser> userManager,IMemoryCache  memory)
@@ -25,6 +27,7 @@ namespace LivingCarPark.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
             _memory = memory;
+            _carParkManager = new CarParkSignInManager("blah");
         }
 
 
@@ -51,16 +54,26 @@ namespace LivingCarPark.Controllers
             if (ModelState.IsValid)
             {
 
-                var result = await _signInManager.PasswordSignInAsync(model.Username,
-                    model.Password,
-                    model.RememberMe,
-                    false);
+                //var result = await _signInManager.PasswordSignInAsync(model.Username,
+                //    model.Password,
+                //    model.RememberMe,
+                //    false);
 
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "CarPark");
+                
+                CustomLogin cl=_carParkManager.SignIn(new CustomLogin() { Username = model.Username, Password = model.Password },true);
+                Response.Cookies.Delete(cl.cookienameanti);
+                Response.Cookies.Delete(cl.cookienameID);
+                Response.Cookies.Append(cl.cookienameanti, cl.cookievalanti);
+                Response.Cookies.Append(cl.cookienameID, cl.cookievalID);
+             
+                //var response = HttpContext.Current.Response;
+                //response.Cookies.Remove("mycookie");
+                //response.Cookies.Add(cookie);
+                //if (result.Succeeded)
+                //{
+                return RedirectToAction("Index", "CarPark");
 
-                }
+                //}
             }
 
             ModelState.AddModelError("", "Falied to login");

@@ -8,6 +8,7 @@ using CarParkApi.Data.Entities;
 using CarParkApi.JwtModel;
 using CarParkUser = WebApiModels.CarParkUserModel;
 
+
 namespace CoreApiClient
 {
     public partial class ApiClient
@@ -89,6 +90,13 @@ namespace CoreApiClient
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
                 "User/ChangeCars"));
             return await PostAsync<ChangeCars>(requestUrl, model);
+        }
+
+        public async Task<Message<CustomLogin>> SignIn(CustomLogin model)
+        {
+            var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "User/SignIn"));
+            return await PostAsync<CustomLogin>(requestUrl, model);
         }
 
         //public async Task<Message<ChangeCars>> Authenticate(applicationlogin model)

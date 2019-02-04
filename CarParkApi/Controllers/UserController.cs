@@ -12,6 +12,8 @@ using CarParkApi.JwtModel;
 using CarParkApi.Service;
 using Microsoft.AspNetCore.Authorization;
 
+using System.Security.Cryptography;
+
 namespace CarParkApi.Controllers
 {
     [Authorize]
@@ -24,6 +26,7 @@ namespace CarParkApi.Controllers
         private readonly IOptions<MySettingsModel> appSettings;
         private LivingCarParkContext _context;
         private iapplicationservice _applicationservice;
+       
         public UserController(IOptions<MySettingsModel> app, LivingCarParkContext context, iapplicationservice applicationservice)
         {
             appSettings = app;
@@ -62,6 +65,40 @@ namespace CarParkApi.Controllers
 
             var msg = new Message<applicationlogin>();
             msg.Data = appslogins;
+            msg.DataExist = true;
+            msg.IsSuccess = true;
+            return Ok(msg);
+
+        }
+
+        // GET api/values
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("SignIn")]
+        public IActionResult SignIn(CustomLogin appparam)
+        {
+            ////[FromBody]applicationlogin appParam)
+            //applicationlogin appParam = new applicationlogin();
+            //var appslogins = _applicationservice.Authenticate(appparam.username, appparam.password);
+            //if (appslogins == null)
+            //    return BadRequest(new { message = "you shall not pass!! wrong pass or user!" });
+
+            //_context.Us
+
+            //string hash = appparam.Password.ToHashSet();
+            var noUser = _context.Users.FirstOrDefault(x => x.UserName == appparam.Username && VerifyHashedPassword(x.PasswordHash, appparam.Password));
+            //if()
+            string anticookename = ".AspNetCore.Antiforgery.fzGezjtqJAY";
+                string anticookeval = "CfDJ8FTBwlukAMlMqMnV87ZWL9kixQl6vYZVAfwGfCvPwE7hZ3bZ5bv952f8DHi0jyu-Cu7tsnM2uMffxjr6jSINUuN3hMDsfiH6vQEooRacNicQxg__w3G9hddwaFISCh94TIOqFh4l24wn8VtPZ4oDTo8";
+            string IDentcookename = ".AspNetCore.Identity.Application";
+            string IDentcookeval = "CfDJ8FTBwlukAMlMqMnV87ZWL9kvGhYXjZyI9I3NqPtCQfTy_ea8OGNrvwCUMVbxY3FZOXRcInvU8R5a6WDEfLtLQkm52Lyb6UNj-bJsffT66nb9nL_DQUK-z1RKHfQd0Ww3ffzMPlc2GYu9dvWcHiFqPT6H1Vqk8KOHM507YLdgCoeS6L4LJrd1SBjOoa2BMCwMD85j-KZv-7Kx1L0PjsWf8eh6YQrr433dDo9eIX_dRpZj2MB7Hso-8dw-ERlBpR_a8qwGC6ys6xbtem5Eb2Vtc2ZxxJQnkpByxpsunA_RFCC0qGNEMS4oOmBWnTve8aLOSiEaKpDzSIvhK0FWlDBMmhf8_T5cgIG_btSF5c8ET--ny5pZkgQHWRrDUUtk8Da3_p-VpRwOYFP1OamnSGGtNq8nOs43fVerEfqv3FblXhEjdcDNfzM_gYBhgg905T70t3gXrkZmbUei5lOg79bJxda2IrUXBlGSy2i-n4Ily83VwtOmlIKAFwb__o1V0BpMbW4BWdqYgBN4fV6wb61lkTZo336Vo51lYUHxVuS5jEHtwsBf9FyqjJuhXKxmlMqWfUn_IKfPhiQLXWYIknJM0BWEEAljee1DjPzSKWG6H8X6rHCM5DB6Ms-RVXrrA2KmrGg6StRIZxovDQ97JCPmQOIp0SzM_GmZlIaq7Z08UWKk_D-LBJOeprr7hz5v2MXCJA";
+
+            appparam.cookienameanti = anticookename;
+            appparam.cookievalanti = anticookeval;
+            appparam.cookienameID = IDentcookename;
+            appparam.cookievalID = IDentcookeval;
+            var msg = new Message<CustomLogin>();
+            msg.Data = appparam;
             msg.DataExist = true;
             msg.IsSuccess = true;
             return Ok(msg);
@@ -300,6 +337,61 @@ namespace CarParkApi.Controllers
         }
 
 
+        public static string HashPassword(string password)
+        {
+            byte[] salt;
+            byte[] buffer2;
+            if (password == null)
+            {
+                throw new ArgumentNullException("password");
+            }
+            using (Rfc2898DeriveBytes bytes = new Rfc2898DeriveBytes(password, 0x10, 0x3e8))
+            {
+                salt = bytes.Salt;
+                buffer2 = bytes.GetBytes(0x20);
+            }
+            byte[] dst = new byte[0x31];
+            Buffer.BlockCopy(salt, 0, dst, 1, 0x10);
+            Buffer.BlockCopy(buffer2, 0, dst, 0x11, 0x20);
+            return Convert.ToBase64String(dst);
+        }
+
+
+        public static bool VerifyHashedPassword(string hashedPassword, string password)
+        {
+            byte[] buffer4;
+            if (hashedPassword == null)
+            {
+                return false;
+            }
+            if (password == null)
+            {
+                throw new ArgumentNullException("password");
+            }
+            byte[] src = Convert.FromBase64String(hashedPassword);
+            if ((src.Length != 0x31) || (src[0] != 0))
+            {
+                return false;
+            }
+            byte[] dst = new byte[0x10];
+            Buffer.BlockCopy(src, 1, dst, 0, 0x10);
+            byte[] buffer3 = new byte[0x20];
+            Buffer.BlockCopy(src, 0x11, buffer3, 0, 0x20);
+            using (Rfc2898DeriveBytes bytes = new Rfc2898DeriveBytes(password, dst, 0x3e8))
+            {
+                buffer4 = bytes.GetBytes(0x20);
+            }
+            return ByteArraysEqual(buffer3, buffer4);
+        }
+
+        private static bool ByteArraysEqual(byte[] firstHash, byte[] secondHash)
+        {
+            int _minHashLength = firstHash.Length <= secondHash.Length ? firstHash.Length : secondHash.Length;
+            var xor = firstHash.Length ^ secondHash.Length;
+            for (int i = 0; i < _minHashLength; i++)
+                xor |= firstHash[i] ^ secondHash[i];
+            return 0 == xor;
+        }
 
     }
 }

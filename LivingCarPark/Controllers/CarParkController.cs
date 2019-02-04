@@ -60,6 +60,15 @@ namespace LivingCarPark.Controllers
         public async Task<IActionResult> CarPark()
         {
 
+            string vaspresent;
+           if(_memory.Get("usercarpark")==null)
+            {
+                vaspresent = "no it was not ";
+            }
+           else
+            {
+                vaspresent = "yes it was !!! ";
+            }
             Carpark usercp = new Carpark();
             usercp.User = new CarParkUser() { Id = User.Claims.FirstOrDefault().Value };
             CarParkModel cpm = new CarParkModel()
@@ -67,6 +76,9 @@ namespace LivingCarPark.Controllers
                 User=User.Claims.FirstOrDefault().Value
             };
             var data2 = ApiClientFactory.Instance.GetUserCarPark(cpm);
+
+
+            _memory.Set("usercarpark",data2.Result.Data);
 
             GameArea ga = new GameArea();
             ga.carpark = data2.Result.Data;
