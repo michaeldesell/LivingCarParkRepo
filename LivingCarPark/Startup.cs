@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LivingCarPark.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,11 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
-using CarParkApi.Data;
-using CarParkApi.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
-using LivingCarPark.Model;
-using WebApiModels;
 
 
 namespace LivingCarPark
@@ -46,13 +41,7 @@ namespace LivingCarPark
             });
 
             //Register services needed for dependency injection, using ApplicationUser class
-            services.AddIdentity<CarParkUser, IdentityRole>(cfg =>
-            {
-                cfg.User.RequireUniqueEmail = true;
-            })
-                .AddEntityFrameworkStores<LivingCarParkContext>()
-                .AddDefaultTokenProviders();
-
+           
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             // configure strongly typed settings objects
@@ -79,7 +68,7 @@ namespace LivingCarPark
             {
                 cfg.MapRoute("Default",
                     "/{controller}/{action}/{id?}",
-                    new { controller = "MyCarPark", Action = "MyCarPark" });
+                    new { controller = "App", Action = "Index" });
             });
            
             

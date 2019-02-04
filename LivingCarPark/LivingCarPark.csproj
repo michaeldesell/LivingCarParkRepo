@@ -112,12 +112,11 @@
   <ItemGroup>
     <Folder Include="Model\JwtHelper\" />
     <Folder Include="Tutorials\" />
+    <Folder Include="wwwroot\lib\jquery-ajax-unobtrusive\" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CarParkApi\CarParkApi.csproj" />
-    <ProjectReference Include="..\CarParkLogic\CarParkLogic.csproj" />
-    <ProjectReference Include="..\CoreApiClient\CoreApiClient.csproj" />
+    <ProjectReference Include="..\CarParkApi\CarPark.WebAPI.csproj" />
     <ProjectReference Include="..\TextHelper\TextHelper.csproj" />
   </ItemGroup>
 

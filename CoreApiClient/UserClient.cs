@@ -55,10 +55,10 @@ namespace CoreApiClient
             return await PostAsync<CarParkUserModel>(requestUrl, model);
         }
 
-        public async Task<Message<CarParkModel>> GetUserCarPark(CarParkModel id)
+        public async Task<Message<CarParkModel>> GetUserActiveCarPark(CarParkModel id)
         {
             var requestUrl = CreateRequestUri(string.Format(System.Globalization.CultureInfo.InvariantCulture,
-                "User/GetUserCarPark"));
+                "User/GetUserActiveCarPark"));
             return await PostAsync<CarParkModel>(requestUrl, id);
         }
 

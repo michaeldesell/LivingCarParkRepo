@@ -14,14 +14,19 @@ using Microsoft.AspNetCore.Authorization;
 using LivingCarPark.Factory;
 using LivingCarPark.Properties;
 using Microsoft.Extensions.Caching.Memory;
+using System.Timers;
 
 namespace LivingCarPark.Controllers
 {
+
+
     [Authorize]
     public class CarParkController : Controller
     {
         private readonly IOptions<MySettingsModel> appSettings;
         private IMemoryCache _memory;
+        private static Timer timer;
+
         public CarParkController(IOptions<MySettingsModel> app, IMemoryCache memory)
         {
             appSettings = app;
@@ -30,54 +35,69 @@ namespace LivingCarPark.Controllers
             Utility.ApplicationSettings.username = appSettings.Value.username;
             Utility.ApplicationSettings.password = appSettings.Value.password;
             Factory.ApiClientFactory.InstanceMemory = _memory;
+
         }
 
         //[authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-
-
-            var data = User.Identity;
-            //var data = ApiClientFactory.Instance.GetUserCarPark(new UserModel());
-
-            Carpark usercp = new Carpark();
-            CarParkModel cpm = new CarParkModel();
-            cpm.User = User.Claims.FirstOrDefault().Value;
-            //usercp.User = new CarParkUser() { Id = User.Claims.FirstOrDefault().Value };
-            var data2 = ApiClientFactory.Instance.GetUserCarPark(cpm);
-            if (data2.Result.DataExist && data2.Result.IsSuccess)
+            CarParkModel cpm = new CarParkModel()
             {
-                return RedirectToAction("CarPark", "CarPark");
+                User = new CarParkUserModel() { Id = User.Claims.FirstOrDefault().Value }
+            };
+
+            var data2 = await ApiClientFactory.Instance.GetUserActiveCarPark(cpm);
+            if (data2.DataExist)
+            {
+                return RedirectToAction("MyCarPark", "CarPark");
             }
-            else if (!data2.Result.DataExist)
+            else if (!data2.DataExist)
             {
                 return RedirectToAction("NewCarPark", "CarPark");
             }
 
-            return View();
+
+            return View(cpm);
         }
 
+        public async Task<IActionResult> MyCarPark()
+        {
+
+            CarParkModel carpark = new CarParkModel();
+
+            carpark.User = new CarParkUserModel() { Id = User.Claims.FirstOrDefault().Value };
+
+
+
+            var data = ApiClientFactory.Instance.GetUserActiveCarPark(carpark);
+
+            carpark = data.Result.Data;
+
+            carpark = CarParkDataLogic.CarsArrivingAndLeaving(carpark);
+
+            return View(carpark);
+
+
+        }
         public async Task<IActionResult> CarPark()
         {
 
-            Carpark usercp = new Carpark();
-            usercp.User = new CarParkUser() { Id = User.Claims.FirstOrDefault().Value };
-            CarParkModel cpm = new CarParkModel()
-            {
-                User=User.Claims.FirstOrDefault().Value
-            };
-            var data2 = ApiClientFactory.Instance.GetUserCarPark(cpm);
+            //CarParkModel usercp = new CarParkModel();
+            //usercp.User = new CarParkUserModel() { Id = User.Claims.FirstOrDefault().Value };
 
-            GameArea ga = new GameArea();
-            ga.carpark = data2.Result.Data;
-            ga.user = data2.Result.Data.User;
-            ga.backgroundimage = Resources.gamebackground1;
-            ga.parkinggarage = Resources.parkinggarage_entrence_empty1;
-            ga.redcar = Resources.gamebackground1;
-            //var info= Resources.Red_car1;
-            //var redcar = Resources.Red_car1;
-            //var garage = Resources.parkinggarage_entrence_empty1;
-            return View(ga);
+            //var data2 = ApiClientFactory.Instance.GetUserActiveCarPark(usercp);
+
+
+            //GameArea ga = new GameArea();
+            //ga.carpark = data2.Result.Data;
+            //ga.user = data2.Result.Data.User;
+            //ga.backgroundimage = Resources.gamebackground1;
+            //ga.parkinggarage = Resources.parkinggarage_entrence_empty1;
+            //ga.redcar = Resources.gamebackground1;
+            ////var info= Resources.Red_car1;
+            ////var redcar = Resources.Red_car1;
+            ////var garage = Resources.parkinggarage_entrence_empty1;
+            return View();
         }
 
         public IActionResult NewCarPark()
@@ -87,17 +107,21 @@ namespace LivingCarPark.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNewCarPark(CarParkModel carpark)
+        public async Task<IActionResult> CreateNewCarPark(CreateCarpark carpark)
         {
 
             if (ModelState.IsValid)
             {
-                CarParkModel model = new CarParkModel() { User = User.Claims.FirstOrDefault().Value, Name = carpark.Name };
-                var data = await ApiClientFactory.Instance.SaveCarpark(carpark);
-
-                    if (data.IsSuccess)
+                CarParkModel model = new CarParkModel()
                 {
-                    return RedirectToAction("CarPark", "CarPark");
+                    User = new CarParkUserModel() { Id = User.Claims.FirstOrDefault().Value },
+                    Name = carpark.CarParkName
+                };
+                var data = await ApiClientFactory.Instance.SaveCarpark(model);
+
+                if (data.IsSuccess)
+                {
+                    return RedirectToAction("MyCarPark", "CarPark");
                 }
             }
 
@@ -131,5 +155,15 @@ namespace LivingCarPark.Controllers
 
             return Functions.TellWhatHappends(CarData);
         }
+
+
+        public async Task<IActionResult> Display(CarParkModel model)
+        {
+
+            return PartialView();
+
+        }
+
+
     }
 }

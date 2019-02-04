@@ -3,7 +3,6 @@ using CarParkLogic.Factory;
 using System.Threading.Tasks;
 using WebApiModels;
 using System.Collections;
-using CarParkApi.Data.Entities;
 using System.Collections.Generic;
 
 namespace CarParkLogic
@@ -15,7 +14,7 @@ namespace CarParkLogic
          * We want to keep logic and calculations away from the controller to keep the code as clean
          * as possible.
          */
-        public static Carpark CarsArrivingAndLeaving(Carpark carpark)
+        public static Carpark CarsArrivingAndLeaving(CarParkModel carpark)
         {
 
             carpark = CarParkFunctions.CarsLeaving(carpark);

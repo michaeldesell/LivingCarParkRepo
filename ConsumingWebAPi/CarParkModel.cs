@@ -13,11 +13,14 @@ namespace WebApiModels
         [DataMember(Name = "Id")]
         public int Id { get; set; }
 
+        [DataMember(Name = "User")]
+        public CarParkUserModel User { get; set; }
+
         [DataMember(Name = "Name")]
         public string Name { get; set; }
 
-        [DataMember(Name = "User")]
-        public string User { get; set; }
+        [DataMember(Name = "Active")]
+        public bool Active { get; set; }
 
         [DataMember(Name = "Floors")]
         public FloorModel Floors { get; set; }

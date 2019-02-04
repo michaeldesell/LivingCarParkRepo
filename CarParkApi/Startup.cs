@@ -10,15 +10,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using CarParkApi.Data;
 using Microsoft.EntityFrameworkCore;
-using CarParkApi.JwtHelper;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using CarParkApi.Service;
+using Microsoft.AspNetCore.Identity;
 
-namespace CarParkApi
+
+
+namespace CarPark.WebAPI
 {
     public class Startup
     {
@@ -35,22 +35,23 @@ namespace CarParkApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            //Add DBContext and fetch ConnectionString from config
-            services.AddDbContext<LivingCarParkContext>(cfg =>
-            {
-                cfg.UseSqlServer(_config.GetConnectionString("DBConnectionString"));
-
-            });
+          
             //Added jwt
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var appSettingsSection = _config.GetSection("AppSettings");
-            services.Configure<appsettings>(appSettingsSection);
+            services.Configure<>(appSettingsSection);
 
             var appsetting = appSettingsSection.Get<appsettings>();
             var key = Encoding.ASCII.GetBytes(appsetting.secret);
 
+            services.AddIdentity<CarParkUser, IdentityRole>(cfg =>
+            {
+                cfg.User.RequireUniqueEmail = true;
+            })
+               .AddEntityFrameworkStores<LivingCarParkContext>()
+               .AddDefaultTokenProviders();
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

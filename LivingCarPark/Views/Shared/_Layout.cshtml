@@ -5,6 +5,8 @@
     <title>@ViewBag.Title</title>
     <link href="~/css/site.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/jquery/dist/jquery.min.js" rel="stylesheet" />
+    <link href="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js" rel="stylesheet" />
 
     <style>
         #GameArea {
@@ -12,14 +14,13 @@
         }
         /*#divGameArea { background-image: url('https://www.google.se/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjZpLCIkIHgAhUIjiwKHe4ECPwQjRx6BAgBEAU&url=https%3A%2F%2Fwww.mestmotor.se%2Fautomotorsport%2Fartiklar%2Fnyheter%2F20180305%2Fvolvo-kor-om-alla-konkurrenter-xc40-ar-arets-bil%2F&psig=AOvVaw1BZ-yYXewA0Zw971IPNUkf&ust=1548237441722367') }*/
     </style>
-
 </head>
 <body>
-    @*<div class="w-100 p-3">
+    <div class="w-100 p-3">
         <div class="banan">
             @if (User.Identity.IsAuthenticated)
             {
-                
+
                 <a asp-controller="App" asp-action="Index">Index</a>
 
                 <a asp-controller="CarPark" asp-action="CarPark">Go to @UserManager.GetUserAsync(User).Result.FirstName CarPark</a>
@@ -34,7 +35,7 @@
 
 
         </div>
-    </div>*@
+    </div>
 
     <header class="container">
         <h3 class="text-center">@ViewBag.Title</h3>
@@ -43,8 +44,9 @@
         @RenderBody()
     </div>
     <div class="container"><footer class="text-center">Living Car Park Copyright 2019</footer></div>
-    <script src="~/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="~/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     @RenderSection("scripts", false)
 </body>
 

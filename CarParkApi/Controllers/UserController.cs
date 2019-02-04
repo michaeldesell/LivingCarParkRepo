@@ -4,13 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-//using CarParkApi.Model;
 using WebApiModels;
-using CarParkApi.Data;
-using CarParkApi.Data.Entities;
 using CarParkApi.JwtModel;
 using CarParkApi.Service;
 using Microsoft.AspNetCore.Authorization;
+using CarParkLogic;
+
 
 namespace CarParkApi.Controllers
 {
@@ -24,6 +23,7 @@ namespace CarParkApi.Controllers
         private readonly IOptions<MySettingsModel> appSettings;
         private LivingCarParkContext _context;
         private iapplicationservice _applicationservice;
+
         public UserController(IOptions<MySettingsModel> app, LivingCarParkContext context, iapplicationservice applicationservice)
         {
             appSettings = app;
@@ -52,15 +52,17 @@ namespace CarParkApi.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("Authenticate")]
-        public IActionResult Authenticate([FromBody]applicationlogin appparam)
+        public IActionResult Authenticate([FromBody]JwtApplicationlogin appparam)
         {
             //[FromBody]applicationlogin appParam)
-            applicationlogin appParam = new applicationlogin();
+
+            UserDataLogic.Authenticate(appparam);
+            JwtApplicationlogin appParam = new JwtApplicationlogin();
             var appslogins = _applicationservice.Authenticate(appparam.username, appparam.password);
             if (appslogins == null)
                 return BadRequest(new { message = "you shall not pass!! wrong pass or user!" });
 
-            var msg = new Message<applicationlogin>();
+            var msg = new Message<JwtApplicationlogin>();
             msg.Data = appslogins;
             msg.DataExist = true;
             msg.IsSuccess = true;
@@ -106,16 +108,6 @@ namespace CarParkApi.Controllers
         [Route("KickAdmin")]
         public IActionResult KickAdmin(ChangeAdminPriviligies login)
         {
-            ////return new string[] { "value1", "value2" };
-            //UserModel Data = new UserModel()
-            //{
-            //    Id = 1,
-            //    Carpark = 1,
-            //    Password = "banan",
-            //    Username = "bananarne"
-
-
-            //};
             ChangeAdminPriviligies usm = login;
             var role = _context.UserRoles.FirstOrDefault(x => x.UserId == usm.UserID && x.RoleId == "1");
             if (role != null)
@@ -174,11 +166,11 @@ namespace CarParkApi.Controllers
         }
 
         [HttpPost]
-        [Route("GetUserCarPark")]
-        public IActionResult GetUserCarPark(CarParkModel carpark)
+        [Route("GetUserActiveCarPark")]
+        public IActionResult GetUserActiveCarPark(CarParkModel carpark)
         {
-            List<CarParkModel> carparks = _context.Carparks
-                .Where(x => x.User.Id.Equals(carpark.User))
+            CarParkModel activecarpark = _context.Carparks
+                .Where(x => x.User.Id == carpark.User.Id && x.Active)
                 .Select(x => new CarParkModel
                 {
                     Id = x.Id,
@@ -188,22 +180,22 @@ namespace CarParkApi.Controllers
                     carpark_rating = x.carpark_rating,
                     develop_pressure = x.develop_pressure
 
-                }).ToList();
+                }).FirstOrDefault();
 
             var msg = new Message<CarParkModel>();
-            if (carpark != null)
+            if (activecarpark != null)
             {
 
                 msg.IsSuccess = true;
                 msg.DataExist = true;
-                msg.Data = carpark;
-                msg.ReturnMessage = "your CarPark has been retrieved succesfully";
+                msg.Data = activecarpark;
+                msg.ReturnMessage = "your active CarPark has been retrieved successfully";
             }
             else
             {
                 msg.IsSuccess = true;
                 msg.DataExist = false;
-                msg.ReturnMessage = "You must create a carpark";
+                msg.ReturnMessage = "There are no active carparks for this user";
             }
 
 
@@ -215,7 +207,7 @@ namespace CarParkApi.Controllers
         [Route("SaveCarPark")]
         public IActionResult SaveCarPark(CarParkModel carpark)
         {
-            CarParkUser User = _context.Users.FirstOrDefault(x => x.Id.Equals(carpark.User));
+            CarParkUser User = _context.Users.FirstOrDefault(x => x.Id == carpark.User.Id);
 
 
             Carpark newcarpark = new Carpark(carpark.Name, User);
@@ -224,13 +216,13 @@ namespace CarParkApi.Controllers
 
             if (User != null)
             {
-                _context.Add(newcarpark);
+                _context.Carparks.Add(newcarpark);
                 _context.SaveChanges();
 
                 msg.IsSuccess = true;
                 msg.DataExist = true;
                 msg.Data = model;
-                msg.ReturnMessage = "your CarPark has been retrieved succesfully";
+                msg.ReturnMessage = "your  CarPark has been retrieved succesfully";
             }
             else
             {
@@ -297,6 +289,13 @@ namespace CarParkApi.Controllers
 
 
             return Ok(msg);
+        }
+
+        [HttpPost]
+        [Route("UpdateCarPark")]
+        public IActionResult UpdateCarPark(CarParkModel carpark)
+        {
+            carpark = CarParkDataLogic.CarsArrivingAndLeaving(carpark);
         }
 
 

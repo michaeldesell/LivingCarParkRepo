@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using WebApiModels;
-using CarParkApi.Data.Entities;
 
 namespace CarParkLogic
 {
     static class CarParkFunctions
     {
 
-        public static Carpark CarsArriving(Carpark carpark)
+        public static Carpark CarsArriving(CarParkModel carpark)
         {
             List<Car> que = new List<Car>();
             Random Rgenerate = new Random();
@@ -23,7 +22,7 @@ namespace CarParkLogic
             carpark.Carsarriving = cars;
             return carpark;
         }
-        public static Carpark CarsLeaving(Carpark carpark)
+        public static Carpark CarsLeaving(CarParkModel carpark)
         {
             Random Rgenerate = new Random();
 
@@ -64,7 +63,7 @@ namespace CarParkLogic
         }
 
 
-        public static Carpark ParkCar(Carpark carpark, Car car)
+        public static CarParkModel ParkCar(CarParkModel carpark, Car car)
         {
             /*Function that tries to find the first available parking space in the carpark.
             If an available parking space is found, the car is parked and the rating goes up.
